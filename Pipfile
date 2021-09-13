@@ -8,7 +8,7 @@ pre-commit = "*"
 
 [packages]
 aiofiles = "*"
-click = "*"
+configargparse = "*"
 
 [requires]
 python_version = "3.9"
