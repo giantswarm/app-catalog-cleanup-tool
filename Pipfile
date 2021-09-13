@@ -9,6 +9,7 @@ pre-commit = "*"
 [packages]
 aiofiles = "*"
 configargparse = "*"
+tempora = "*"
 
 [requires]
 python_version = "3.9"

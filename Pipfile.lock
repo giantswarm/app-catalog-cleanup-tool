@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4730b4405247328a1f0657751f808f26a1d741e674e5c345a12bbbb97b802b39"
+            "sha256": "c0c0d8c0416983be418dd3101908462decf1b9d710ce6e13842de2e436a37b87"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -31,6 +31,37 @@
             ],
             "index": "pypi",
             "version": "==1.5.2"
+        },
+        "jaraco.functools": {
+            "hashes": [
+                "sha256:7c788376d69cf41da675b186c85366fe9ac23c92a70697c455ef9135c25edf31",
+                "sha256:bfcf7da71e2a0e980189b0744b59dba6c1dcf66dcd7a30f8a4413e478046b314"
+            ],
+            "markers": "python_version >= '3.6'",
+            "version": "==3.3.0"
+        },
+        "more-itertools": {
+            "hashes": [
+                "sha256:70401259e46e216056367a0a6034ee3d3f95e0bf59d3aa6a4eb77837171ed996",
+                "sha256:8c746e0d09871661520da4f1241ba6b908dc903839733c8203b552cffaf173bd"
+            ],
+            "markers": "python_version >= '3.5'",
+            "version": "==8.9.0"
+        },
+        "pytz": {
+            "hashes": [
+                "sha256:83a4a90894bf38e243cf052c8b58f381bfe9a7a483f6a9cab140bc7f702ac4da",
+                "sha256:eb10ce3e7736052ed3623d49975ce333bcd712c7bb19a58b9e2089d4057d0798"
+            ],
+            "version": "==2021.1"
+        },
+        "tempora": {
+            "hashes": [
+                "sha256:c54da0f05405f04eb67abbb1dff4448fd91428b58cb00f0f645ea36f6a927950",
+                "sha256:ef2d8bb35902d5ea7da95df33456685a6d305b97f311725c12e55c13d85c0938"
+            ],
+            "index": "pypi",
+            "version": "==4.1.1"
         }
     },
     "develop": {
