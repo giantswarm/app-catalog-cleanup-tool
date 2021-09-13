@@ -3,6 +3,7 @@ import asyncio
 import logging
 import os
 import re
+import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Pattern, Optional
@@ -90,7 +91,9 @@ class ValidatedConfig:
     keep_from: datetime
 
 
-def validate(config: configargparse.Namespace) -> Optional[ValidatedConfig]:
+def validate(  # noqa :C901
+    config: configargparse.Namespace,
+) -> Optional[ValidatedConfig]:
     try:
         # check if catalog dir exists
         if (
@@ -121,7 +124,10 @@ def validate(config: configargparse.Namespace) -> Optional[ValidatedConfig]:
         if config.keep_since:
             keep_from = datetime.fromisoformat(config.keep_since)
         if config.delete_before:
-            delta = parse_timedelta(config.delta_before)
+            try:
+                delta = parse_timedelta(config.delete_before)
+            except Exception:
+                raise ValueError(f"can't parse time delta '{config.delete_before}'")
             keep_from -= delta
         return ValidatedConfig(app_regexp, keep_from)
 
@@ -132,7 +138,10 @@ def validate(config: configargparse.Namespace) -> Optional[ValidatedConfig]:
 
 async def main() -> None:
     config = configure()
-    validate(config)
+    cfg = validate(config)
+    if cfg is None:
+        sys.exit(1)
+    logger.info(f"Trying to remove all matching app entries before {cfg.keep_from}.")
 
 
 if __name__ == "__main__":
