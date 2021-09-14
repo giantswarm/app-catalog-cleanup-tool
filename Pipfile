@@ -10,6 +10,7 @@ pre-commit = "*"
 aiofiles = "*"
 configargparse = "*"
 tempora = "*"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.9"
