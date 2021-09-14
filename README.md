@@ -1,38 +1,36 @@
-# python-app-template
+# app catalog cleanup tool
 
-A ready to use python app template. Based on `pipenv`. 
+A simple tool to remove old Helm charts stored in a chart repository.
 
-## What's included
+## How does it work
 
-Simple python app stub with the following dev time helpers/checkers:
+You specify a date or time delta and a regexp to match application names. All chart entries matching
+the regexp and older than the indicated date are removed, i.e.:
 
-- [`black`](https://github.com/psf/black)
-- [`bandit`](https://pypi.org/project/bandit/)
-- [`flake8`](https://flake8.pycqa.org/en/latest/)
-- [`mypy`](http://mypy-lang.org/)
+- relevant entry is removed from the `index.yaml` file
+- the chart file is removed
+- if exist, the metadata directory is removed.
 
-all integrated with git commit hooks using [`pre-commit`](https://pre-commit.com/).
+## Examples
 
-Additionally:
+1. Remove all app entries for the `linkerd2-app` that are older than '2019-01-01' for the catalog stored in `/tmp/giantswarm-playground-catalog`
 
-- Apache licence
-- simple `setup.py`
-- CHANGELOG.md
+    ```bash
+    python -m app_catalog_cleanup_tool -a "linkerd2-app" -s "2019-01-01" /tmp/giantswarm-playground-catalog
+    ```
 
-## How to use
+2. Remove all app entries older than 4 weeks for the catalog stored in `/tmp/giantswarm-playground-catalog`
 
-Create a repo based on this one, then initialize `pipenv` (adjust python version):
+    ```bash
+    python -m app_catalog_cleanup_tool -a ".*" -b "4 weeks" /tmp/giantswarm-playground-catalog
+    ```
+
+## Development
+
+Use `pipenv` to manage dependencies and `pre-commit` to check for code quality. To get started, check out the repo
+and run:
 
 ```bash
-pipenv --python 3.8
-pipenv install --dev
+pipenv install -d
+pipenv run pre-commit install --install-hooks
 ```
-
-and enable `pre-commit` hooks:
-
-```bash
-pipenv run pre-commit install
-```
-
-Edit your project information in `setup.py`.
-

@@ -154,8 +154,18 @@ def validate(  # noqa :C901
 
 
 async def clean_catalog(cfg: ValidatedConfig) -> None:
-    await clean_index(cfg)
-    # to_remove = await clean_index(cfg)
+    to_remove = await clean_index(cfg)
+    del_tasks = [aiofiles.os.remove(os.path.join(cfg.path, name)) for name in to_remove]
+    await asyncio.gather(*del_tasks)
+    # TODO: the part below would probably also benefit a little from running as async, but `aiofiles` doesn't
+    #  currently provide `rmtree`, only `rmdir`, so skipping for now
+    for name in to_remove:
+        logger.debug(f"Removed chart file: '{name}'.")
+        meta_dir_name = os.path.join(cfg.path, name + "-meta")
+        if not os.path.isdir(meta_dir_name):
+            continue
+        logger.debug(f"Removing directory '{meta_dir_name}'.")
+        shutil.rmtree(meta_dir_name)
 
 
 def date_based_cleaner(cfg: ValidatedConfig, entries: list) -> Tuple[list, list]:
@@ -212,6 +222,7 @@ async def main() -> None:
         sys.exit(1)
     logger.info(f"Trying to remove all matching app entries before {cfg.keep_from}.")
     await clean_catalog(cfg)
+    logger.info("Catalog cleanup complete.")
 
 
 if __name__ == "__main__":
