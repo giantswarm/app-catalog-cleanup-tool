@@ -80,6 +80,10 @@ def configure() -> configargparse.Namespace:
         "--version", action="version", version=f"{APP_NAME} {get_version()}"
     )
     config = config_parser.parse_args()
+
+    log_format = "%(asctime)s %(name)s %(levelname)s: %(message)s"
+    logging.basicConfig(format=log_format)
+    logger.setLevel(logging.INFO)
     if config.debug:
         logger.setLevel(logging.DEBUG)
     return config
