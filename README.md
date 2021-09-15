@@ -4,12 +4,14 @@ A simple tool to remove old Helm charts stored in a chart repository.
 
 ## How does it work
 
-You specify a date or time delta and a regexp to match application names. All chart entries matching
-the regexp and older than the indicated date are removed, i.e.:
+You specify a removal condition and a regexp to match application names. All chart entries matching
+the regexp and matching the condition are removed, i.e.:
 
 - relevant entry is removed from the `index.yaml` file
 - the chart file is removed
-- if exist, the metadata directory is removed.
+- if exists, the metadata directory is removed.
+
+For a list of available conditions, please run with `--help|-h`.
 
 ## Examples
 
@@ -23,6 +25,12 @@ the regexp and older than the indicated date are removed, i.e.:
 
     ```bash
     python -m app_catalog_cleanup_tool -a ".*" -b "4 weeks" /tmp/giantswarm-playground-catalog
+    ```
+
+3. Keep only at most 3 most recent builds of all apps which names start with "loki"
+
+    ```bash
+    python -m app_catalog_cleanup_tool -a "loki.*" -l 3 /tmp/giantswarm-playground-catalog
     ```
 
 ## Development
