@@ -20,6 +20,9 @@ class BaseSplitter(ABC):
     def split(self, entries: List[AppEntry]) -> SplitResult:
         raise NotImplementedError()
 
+    def _get_chart_file_name(self, entry: AppEntry) -> str:
+        return f"{entry['name']}-{entry['version']}.tgz"
+
 
 class DateSplitter(BaseSplitter):
     def __init__(self, keep_from_date: datetime):
@@ -34,7 +37,23 @@ class DateSplitter(BaseSplitter):
 
         new_app_entries = [e for e in entries if keep(e["created"])]
         entries_to_remove = [
-            f"{e['name']}-{e['version']}.tgz" for e in entries if not keep(e["created"])
+            self._get_chart_file_name(e) for e in entries if not keep(e["created"])
         ]
 
+        return SplitResult(new_app_entries, entries_to_remove)
+
+
+class LimitSplitter(BaseSplitter):
+    def __init__(self, keep_count: int):
+        self._keep_count = keep_count
+        logger.info(
+            f"Trying to remove all matching app entries to limit them to max {keep_count} each."
+        )
+
+    def split(self, entries: List[AppEntry]) -> SplitResult:
+        srt = sorted(entries, key=lambda e: parser.isoparse(e["created"]), reverse=True)
+        new_app_entries = srt[: self._keep_count]
+        entries_to_remove = [
+            self._get_chart_file_name(e) for e in srt[self._keep_count :]
+        ]
         return SplitResult(new_app_entries, entries_to_remove)

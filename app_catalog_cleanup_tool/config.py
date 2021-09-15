@@ -10,7 +10,7 @@ import pytz
 from dateutil import parser
 from tempora import parse_timedelta
 
-from app_catalog_cleanup_tool.splitters import BaseSplitter, DateSplitter
+from app_catalog_cleanup_tool.splitters import BaseSplitter, DateSplitter, LimitSplitter
 
 VER = "v0.0.0-dev"
 APP_NAME = "app_catalog_cleanup_tool"
@@ -104,9 +104,7 @@ def configure() -> configargparse.Namespace:
     return config
 
 
-def validate(  # noqa :C901
-    config: configargparse.Namespace,
-) -> Optional[ValidatedConfig]:
+def validate(config: configargparse.Namespace) -> Optional[ValidatedConfig]:
     try:
         # check if catalog dir exists
         if (
@@ -133,26 +131,7 @@ def validate(  # noqa :C901
                 f"app name regexp '{config.app_regexp}' is not a valid regexp"
             )
 
-        splitter: BaseSplitter
-        # parse since
-        keep_from = datetime.now(timezone.utc)
-        if config.keep_since:
-            keep_from = parser.parse(config.keep_since)
-            if not keep_from.tzinfo:
-                keep_from = pytz.utc.localize(keep_from)
-            splitter = DateSplitter(keep_from)
-        # parse before
-        elif config.delete_before:
-            try:
-                delta = parse_timedelta(config.delete_before)
-            except Exception:
-                raise ValueError(f"can't parse time delta '{config.delete_before}'")
-            keep_from -= delta
-            splitter = DateSplitter(keep_from)
-        else:
-            raise ValueError(
-                "Couldn't configure a valid splitter. This is highly unexpected. Please report a bug."
-            )
+        splitter = get_splitter(config)
         return ValidatedConfig(
             app_regexp,
             config.path,
@@ -164,3 +143,34 @@ def validate(  # noqa :C901
     except ValueError as e:
         logger.critical(f"Bad config: {e}.")
         return None
+
+
+def get_splitter(config: configargparse.Namespace) -> BaseSplitter:
+    splitter: BaseSplitter
+    # parse since
+    keep_from = datetime.now(timezone.utc)
+    if config.keep_since:
+        keep_from = parser.parse(config.keep_since)
+        if not keep_from.tzinfo:
+            keep_from = pytz.utc.localize(keep_from)
+        splitter = DateSplitter(keep_from)
+    # parse before
+    elif config.delete_before:
+        try:
+            delta = parse_timedelta(config.delete_before)
+        except Exception:
+            raise ValueError(f"can't parse time delta '{config.delete_before}'")
+        keep_from -= delta
+        splitter = DateSplitter(keep_from)
+    # parse limit
+    elif config.limit_number:
+        try:
+            count = int(config.limit_number)
+        except Exception:
+            raise ValueError(f"can't parse limit count '{config.limit_number}'")
+        splitter = LimitSplitter(count)
+    else:
+        raise ValueError(
+            "Couldn't configure a valid splitter. This is highly unexpected. Please report a bug."
+        )
+    return splitter

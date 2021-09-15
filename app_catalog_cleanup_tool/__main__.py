@@ -30,7 +30,7 @@ async def clean_catalog(cfg: ValidatedConfig) -> None:
         meta_dir_name = os.path.join(cfg.path, name + "-meta")
         if not os.path.isdir(meta_dir_name):
             continue
-        logger.debug(f"Removing directory '{meta_dir_name}'.")
+        logger.debug(f"Removing directory: '{os.path.basename(meta_dir_name)}'.")
         if not cfg.dry_run:
             shutil.rmtree(meta_dir_name)
 
@@ -59,7 +59,7 @@ async def clean_index(cfg: ValidatedConfig) -> List[str]:
             to_remove.extend(entries_to_remove)
         after = len(new_app_entries)
         logger.info(
-            f"App '{app_name}' will be trimmed to {after} versions from the current {before}."
+            f"App '{app_name}' number of versions will be trimmed to {after} from {before}."
         )
 
     # save backup and the new file
