@@ -226,4 +226,6 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
+    # Please note: this piece of code is written as async/await mostly for learning purposes. It offers
+    #  some performance speedups as well. If you don't like it, shout at me.
     asyncio.run(main())

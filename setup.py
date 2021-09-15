@@ -6,12 +6,12 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name="app_catalog_cleanup_tool",
     version="0.0.1",
-    author="Your Name",
-    author_email="name@giantswarm.io",
-    description="An app that does awesome stuff",
+    author="Łukasz Piątkowski",
+    author_email="lukasz@giantswarm.io",
+    description="Application that removes old charts from chart repos.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/giantswarm/APP_REPO_ON_GH",
+    url="https://github.com/giantswarm/app-catalog-cleanup-tool",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
