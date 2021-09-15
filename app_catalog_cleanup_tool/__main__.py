@@ -58,7 +58,7 @@ def configure() -> configargparse.Namespace:
         required=False,
         default=False,
         action="store_true",
-        help="Enable dry-mode (don't perform any real modifications).",
+        help="Enable dry-run (don't perform any real modifications).",
     )
     config_parser.add_argument(
         "-a",
@@ -102,6 +102,7 @@ class ValidatedConfig:
     keep_from: datetime
     path: str
     index_yaml: str
+    dry_run: bool
 
 
 def validate(  # noqa :C901
@@ -145,7 +146,11 @@ def validate(  # noqa :C901
                 raise ValueError(f"can't parse time delta '{config.delete_before}'")
             keep_from -= delta
         return ValidatedConfig(
-            app_regexp, keep_from, config.path, os.path.join(config.path, "index.yaml")
+            app_regexp,
+            keep_from,
+            config.path,
+            os.path.join(config.path, "index.yaml"),
+            config.dry_run,
         )
 
     except ValueError as e:
@@ -155,8 +160,11 @@ def validate(  # noqa :C901
 
 async def clean_catalog(cfg: ValidatedConfig) -> None:
     to_remove = await clean_index(cfg)
-    del_tasks = [aiofiles.os.remove(os.path.join(cfg.path, name)) for name in to_remove]
-    await asyncio.gather(*del_tasks)
+    if not cfg.dry_run:
+        del_tasks = [
+            aiofiles.os.remove(os.path.join(cfg.path, name)) for name in to_remove
+        ]
+        await asyncio.gather(*del_tasks)
     # TODO: the part below would probably also benefit a little from running as async, but `aiofiles` doesn't
     #  currently provide `rmtree`, only `rmdir`, so skipping for now
     for name in to_remove:
@@ -165,7 +173,8 @@ async def clean_catalog(cfg: ValidatedConfig) -> None:
         if not os.path.isdir(meta_dir_name):
             continue
         logger.debug(f"Removing directory '{meta_dir_name}'.")
-        shutil.rmtree(meta_dir_name)
+        if not cfg.dry_run:
+            shutil.rmtree(meta_dir_name)
 
 
 def date_based_cleaner(cfg: ValidatedConfig, entries: list) -> Tuple[list, list]:
@@ -208,9 +217,10 @@ async def clean_index(cfg: ValidatedConfig) -> List[str]:
         )
 
     # save backup and the new file
-    shutil.move(cfg.index_yaml, cfg.index_yaml + ".back")
-    async with aiofiles.open(cfg.index_yaml, mode="w") as f:
-        await f.write(yaml.dump(new_index_yaml, default_flow_style=False))
+    if not cfg.dry_run:
+        shutil.move(cfg.index_yaml, cfg.index_yaml + ".back")
+        async with aiofiles.open(cfg.index_yaml, mode="w") as f:
+            await f.write(yaml.dump(new_index_yaml, default_flow_style=False))
 
     return to_remove
 
@@ -220,6 +230,8 @@ async def main() -> None:
     cfg = validate(config)
     if cfg is None:
         sys.exit(1)
+    if cfg.dry_run:
+        logger.warning("Running in dry-run, no real operations will be performed.")
     logger.info(f"Trying to remove all matching app entries before {cfg.keep_from}.")
     await clean_catalog(cfg)
     logger.info("Catalog cleanup complete.")
