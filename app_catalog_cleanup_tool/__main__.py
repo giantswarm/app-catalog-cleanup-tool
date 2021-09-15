@@ -76,7 +76,7 @@ def configure() -> configargparse.Namespace:
     exc_group.add_argument(
         "-b",
         "--delete-before",
-        help="A time delta (like '3 days' or '4 weeks') to keep catalog entries. Older entries matching also "
+        help="A time delta (like '3 days' or '4 weeks') to keep catalog entries. Older entries also matching "
         "'--arg-regexp' will be removed.",
     )
     config_parser.add_argument(
