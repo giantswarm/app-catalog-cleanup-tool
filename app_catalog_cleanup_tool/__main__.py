@@ -54,7 +54,7 @@ def configure() -> configargparse.Namespace:
     )
     config_parser.add_argument(
         "-n",
-        "--dry-mode",
+        "--dry-run",
         required=False,
         default=False,
         action="store_true",
