@@ -123,7 +123,7 @@ def validate(  # noqa :C901
             or not os.access(index_path, os.R_OK)
         ):
             raise ValueError(
-                f"file 'index.yaml' doesn't exists in '{config.path}' or doesn't have RW permissions"
+                f"file 'index.yaml' doesn't exist in '{config.path}' or doesn't have RW permissions"
             )
         # parse regexp
         try:
