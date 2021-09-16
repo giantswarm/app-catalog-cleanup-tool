@@ -19,9 +19,7 @@ logger = logging.getLogger(__name__)
 async def clean_catalog(cfg: ValidatedConfig) -> None:
     to_remove = await clean_index(cfg)
     if not cfg.dry_run:
-        del_tasks = [
-            aiofiles.os.remove(os.path.join(cfg.path, name)) for name in to_remove
-        ]
+        del_tasks = [aiofiles.os.remove(os.path.join(cfg.path, name)) for name in to_remove]
         await asyncio.gather(*del_tasks)
     # TODO: the part below would probably also benefit a little from running as async, but `aiofiles` doesn't
     #  currently provide `rmtree`, only `rmdir`, so skipping for now
@@ -46,9 +44,7 @@ async def clean_index(cfg: ValidatedConfig) -> List[str]:
     new_entries = new_index_yaml["entries"]
     for app_name in index_yaml["entries"].keys():
         if not cfg.app_regexp.fullmatch(app_name):
-            logger.debug(
-                f"Skipping app '{app_name}' as it doesn't match the configured app name regexp."
-            )
+            logger.debug(f"Skipping app '{app_name}' as it doesn't match the configured app name regexp.")
             continue
         del new_entries[app_name]
         before = len(entries[app_name])
@@ -58,9 +54,7 @@ async def clean_index(cfg: ValidatedConfig) -> List[str]:
         if len(entries_to_remove) > 0:
             to_remove.extend(entries_to_remove)
         after = len(new_app_entries)
-        logger.info(
-            f"App '{app_name}' number of versions will be trimmed to {after} from {before}."
-        )
+        logger.info(f"App '{app_name}' number of versions will be trimmed to {after} from {before}.")
 
     # save backup and the new file
     if not cfg.dry_run:
