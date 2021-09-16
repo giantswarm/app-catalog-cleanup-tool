@@ -1,5 +1,9 @@
 # app catalog cleanup tool
 
+[![build](https://circleci.com/gh/giantswarm/app-catalog-cleanup-tool.svg?style=svg)](https://circleci.com/gh/giantswarm/app-catalog-cleanup-tool)
+[![codecov](https://codecov.io/gh/giantswarm/app-catalog-cleanup-tool/branch/master/graph/badge.svg)](https://codecov.io/gh/giantswarm/app-catalog-cleanup-tool)
+[![Apache License](https://img.shields.io/badge/license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+
 A simple tool to remove old Helm charts stored in a chart repository.
 
 ## How does it work
