@@ -5,10 +5,15 @@ verify_ssl = true
 
 [dev-packages]
 pre-commit = "*"
+pytest = "*"
+pytest-mock = "*"
+pytest-cov = "*"
 
 [packages]
 aiofiles = "*"
-click = "*"
+configargparse = "*"
+tempora = "*"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.9"
