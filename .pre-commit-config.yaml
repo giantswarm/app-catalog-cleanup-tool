@@ -32,6 +32,7 @@ repos:
   rev: v0.910
   hooks:
   - id: mypy
+    additional_dependencies: [types-python-dateutil, types-aiofiles, types-pytz, types-PyYAML]
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v2.4.0
