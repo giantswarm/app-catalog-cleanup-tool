@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DACCT_TAG=${DACCT_TAG:-"latest"}
+DACCT_TAG=${DACCT_TAG:-"0.1.1"}
 
   # "quay.io/giantswarm/app-build-suite:${DACCT_TAG}" "$@"
 docker run -it --rm \
