@@ -27,16 +27,16 @@ workflows:
                         tags:
                             only: /^v.*/
 
-                              #            -   publish-github-release:
-                              #                    name: publish-github-release-for-dats
-                              #                    requires:
-                              #                        - push-app-test-suite-to-quay
-                              #                    filters:
-                              #                        branches:
-                              #                            ignore: /.*/
-                              #                        tags:
-                              #                            only: /^v.*/
-                              #
+            -   publish-github-release:
+                    name: publish-github-release
+                    requires:
+                        - push-to-quay
+                    filters:
+                        branches:
+                            ignore: /.*/
+                        tags:
+                            only: /^v.*/
+
 
 jobs:
     run-tests:
