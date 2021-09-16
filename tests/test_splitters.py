@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 from app_catalog_cleanup_tool.splitters import DateSplitter, BaseSplitter, LimitSplitter
 
 # noinspection PyUnresolvedReferences
-from tests.test_helpers import Entries, test_entries  # noqa: F401
+from tests.test_helpers import Entries, test_entries, test_index_yaml  # noqa: F401
 
 
 @pytest.mark.parametrize(
