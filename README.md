@@ -27,7 +27,7 @@ For a list of available conditions, please run with `--help|-h`.
     python -m app_catalog_cleanup_tool -a ".*" -b "4 weeks" /tmp/giantswarm-playground-catalog
     ```
 
-3. Keep only at most 3 most recent builds of all apps which names start with "loki"
+3. Keep at most the 3 most recent builds of all apps with names starting with "loki"
 
     ```bash
     python -m app_catalog_cleanup_tool -a "loki.*" -l 3 /tmp/giantswarm-playground-catalog
