@@ -3,19 +3,13 @@ from typing import Dict, List
 
 import pytest
 import pytz
-import yaml
-from app_catalog_cleanup_tool.splitters import DateSplitter, AppEntry, BaseSplitter
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
 
-Entries = Dict[str, List[AppEntry]]
+from app_catalog_cleanup_tool.splitters import DateSplitter, BaseSplitter, LimitSplitter
 
-
-@pytest.fixture
-def test_entries() -> Entries:
-    with open("tests/assets/test_index.yaml", "r") as f:
-        index_yaml = yaml.safe_load(f.read())
-    return index_yaml["entries"]
+# noinspection PyUnresolvedReferences
+from tests.test_helpers import Entries, test_entries  # noqa: F401
 
 
 @pytest.mark.parametrize(
@@ -48,8 +42,22 @@ def test_entries() -> Entries:
                 "loki-stack-app": ["loki-stack-app-0.1.0.tgz"],
             },
         ),
+        # limit: keep 1 each
+        (
+            LimitSplitter(1),
+            {"linkerd2-app": [1], "loki-stack-app": []},
+            {
+                "linkerd2-app": ["linkerd2-app-0.1.0.tgz"],
+                "loki-stack-app": [],
+            },
+        ),
     ],
-    ids=["date: remove everything", "date: keep everything", "date: keep 1 each"],
+    ids=[
+        "date: remove everything",
+        "date: keep everything",
+        "date: keep 1 each",
+        "limit: keep 1 each",
+    ],
 )
 def test_splitters(
     test_entries: Entries,
