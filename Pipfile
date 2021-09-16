@@ -5,6 +5,9 @@ verify_ssl = true
 
 [dev-packages]
 pre-commit = "*"
+pytest = "*"
+pytest-mock = "*"
+pytest-cov = "*"
 
 [packages]
 aiofiles = "*"
