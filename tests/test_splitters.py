@@ -60,7 +60,7 @@ from tests.test_helpers import Entries, test_entries, test_index_yaml  # noqa: F
     ],
 )
 def test_splitters(
-    test_entries: Entries,
+    test_entries: Entries,  # noqa: F811
     splitter: BaseSplitter,
     exp_keep_indexes: Dict[str, List[int]],
     exp_remove_file_names: Dict[str, List[str]],
