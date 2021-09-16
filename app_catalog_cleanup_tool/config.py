@@ -93,9 +93,7 @@ def configure() -> configargparse.Namespace:
         "path",
         help="Path to the catalog directory.",
     )
-    config_parser.add_argument(
-        "--version", action="version", version=f"{APP_NAME} {get_version()}"
-    )
+    config_parser.add_argument("--version", action="version", version=f"{APP_NAME} {get_version()}")
     config = config_parser.parse_args()
 
     log_level = logging.DEBUG if config.debug else logging.INFO
@@ -107,29 +105,17 @@ def configure() -> configargparse.Namespace:
 def validate(config: configargparse.Namespace) -> Optional[ValidatedConfig]:
     try:
         # check if catalog dir exists
-        if (
-            not config.path
-            or not os.path.isdir(config.path)
-            or not os.access(config.path, os.W_OK)
-        ):
+        if not config.path or not os.path.isdir(config.path) or not os.access(config.path, os.W_OK):
             raise ValueError(f"directory '{config.path}' not found")
         # check if index.yaml is there
         index_path = os.path.join(config.path, "index.yaml")
-        if (
-            not os.path.isfile(index_path)
-            or not os.access(index_path, os.W_OK)
-            or not os.access(index_path, os.R_OK)
-        ):
-            raise ValueError(
-                f"file 'index.yaml' doesn't exist in '{config.path}' or doesn't have RW permissions"
-            )
+        if not os.path.isfile(index_path) or not os.access(index_path, os.W_OK) or not os.access(index_path, os.R_OK):
+            raise ValueError(f"file 'index.yaml' doesn't exist in '{config.path}' or doesn't have RW permissions")
         # parse regexp
         try:
             app_regexp = re.compile(config.app_regexp)
         except re.error:
-            raise ValueError(
-                f"app name regexp '{config.app_regexp}' is not a valid regexp"
-            )
+            raise ValueError(f"app name regexp '{config.app_regexp}' is not a valid regexp")
 
         splitter = get_splitter(config)
         return ValidatedConfig(
@@ -170,7 +156,5 @@ def get_splitter(config: configargparse.Namespace) -> BaseSplitter:
             raise ValueError(f"can't parse limit count '{config.limit_number}'")
         splitter = LimitSplitter(count)
     else:
-        raise ValueError(
-            "Couldn't configure a valid splitter. This is highly unexpected. Please report a bug."
-        )
+        raise ValueError("Couldn't configure a valid splitter. This is highly unexpected. Please report a bug.")
     return splitter
