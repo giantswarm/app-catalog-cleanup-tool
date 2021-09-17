@@ -1,0 +1,65 @@
+apiVersion: v1
+entries:
+  linkerd2-app:
+  - apiVersion: v1
+    appVersion: edge-19.11.2
+    created: "2019-12-02T14:52:48.603223569Z"
+    description: Linkerd gives you observability, reliability, and security for your
+      microservices — with no code change required.
+    digest: f7b8008c78e275f00206b2d0d3254680640085b2ec7c4815aa7633791c60a4a0
+    home: https://linkerd.io
+    icon: https://linkerd.io/images/logo-only-200h.png
+    keywords:
+    - service-mesh
+    kubeVersion: '>=1.12.0-0'
+    maintainers:
+    - email: cncf-linkerd-dev@lists.cncf.io
+      name: Linkerd authors
+      url: https://linkerd.io/
+    name: linkerd2-app
+    sources:
+    - https://github.com/linkerd/linkerd2/
+    urls:
+    - https://giantswarm.github.com/giantswarm-playground-catalog/linkerd2-app-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v1
+    appVersion: edge-19.11.2
+    created: "2019-12-02T17:23:06.173939354Z"
+    description: Linkerd gives you observability, reliability, and security for your
+      microservices — with no code change required.
+    digest: 14b976879d02e56adecba40d89764b530c10d98232146c54d8abed2f42802477
+    home: https://linkerd.io
+    icon: https://linkerd.io/images/logo-only-200h.png
+    keywords:
+    - service-mesh
+    kubeVersion: '>=1.12.0-0'
+    maintainers:
+    - email: cncf-linkerd-dev@lists.cncf.io
+      name: Linkerd authors
+      url: https://linkerd.io/
+    name: linkerd2-app
+    sources:
+    - https://github.com/linkerd/linkerd2/
+    urls:
+    - https://giantswarm.github.com/giantswarm-playground-catalog/linkerd2-app-0.0.0-25ecb7f4e6c03e719599e78c750047c931cafe1a.tgz
+    version: 0.0.0-25ecb7f4e6c03e719599e78c750047c931cafe1a
+  loki-stack-app:
+  - apiVersion: v1
+    appVersion: v1.0.0
+    created: "2019-12-02T14:57:20.504982165Z"
+    description: 'Loki: like Prometheus, but for logs.'
+    digest: d132130c8a5bd876c6da0666a5286355623b0f0a47164a2274537fe65f4b1938
+    engine: gotpl
+    home: https://grafana.com/loki
+    icon: https://github.com/grafana/loki/raw/master/docs/logo.png
+    kubeVersion: ^1.10.0-0
+    maintainers:
+    - email: lokiproject@googlegroups.com
+      name: Loki Maintainers
+    name: loki-stack-app
+    sources:
+    - https://github.com/grafana/loki
+    urls:
+    - https://giantswarm.github.com/giantswarm-playground-catalog/loki-stack-app-0.1.0.tgz
+    version: 0.1.0
+generated: "2019-12-02T17:23:06.172293956Z"
