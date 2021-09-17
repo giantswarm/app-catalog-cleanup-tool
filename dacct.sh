@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DACCT_TAG=${DACCT_TAG:-"0.1.2"}
+DACCT_TAG=${DACCT_TAG:-"latest"}
 
 docker run -it --rm \
   -e USE_UID="$(id -u "${USER}")" \
