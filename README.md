@@ -17,6 +17,28 @@ the regexp and matching the condition are removed, i.e.:
 
 For a list of available conditions, please run with `--help|-h`.
 
+## Running
+
+There are currently 2 options:
+
+1. Using your native python 3.9 instalation.
+
+    - Checkout the source code from repository
+    - Run `pipenv install`
+    - Start the tool using `pipenv run python -m app_catalog_cleanup_tool ...`
+
+2. Using the dockerized version
+
+    You can use the dockerized version available as a convience script `dacct.sh`. Please note, that currently the dockerized version can work on
+    the current directory only, so you have to download the script, make it executable in your system, then run it in the directory with a catalog
+    giving the local directory `.` as the ast argument.
+
+    Example:
+
+    ```bash
+    dacct.sh -a ".*" -s "2020-02-01" -d -n .
+    ```
+
 ## Examples
 
 1. Remove all app entries for the `linkerd2-app` that are older than '2019-01-01' for the catalog stored in `/tmp/giantswarm-playground-catalog`
