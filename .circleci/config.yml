@@ -48,7 +48,7 @@ jobs:
             -   run:
                     name: Execute tests
                     command: |
-                        make docker-test
+                        make docker-test-ci
 
             -   codecov/upload:
                     file: .coverage/coverage.xml
