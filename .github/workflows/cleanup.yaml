@@ -19,7 +19,7 @@ on:
       limit-number:
         description: "Most recent versions to keep in the catalog"
         required: false
-        type: number
+        type: string
       debug:
         description: "Enable debug mode"
         default: true
@@ -42,11 +42,11 @@ jobs:
       - name: Check for dry-run
         id: dry-run
         run: |
-          if [ "${{ inputs.dry-run }}" = true ]
+          if [ ${{ inputs.dry-run }} = true ]
           then
-            echo "::set-output name=dry-run::--dry-run"
+            echo '::set-output name=dry-run::--dry-run'
           else
-            echo "::set-output name=dry-run::"
+            echo '::set-output name=dry-run::'
           fi
 
       - name: Conclude condition
@@ -58,11 +58,11 @@ jobs:
           elif [[ ! -z "${{ inputs.delete-before }}" ]]
           then
             echo '::set-output name=condition::--delete-before "${{ inputs.delete-before }}"'
-          elif (( ${{ inputs.limit-number }} > 0 ))
+          elif [[ ! -z "${{ inputs.limit-number }}" ]]
           then
             echo '::set-output name=condition::--limit-number ${{ inputs.limit-number }}'
           else
-            echo "::set-output name=condition::"
+            echo '::set-output name=condition::'
           fi
 
       - name: Execute ACC tool
