@@ -54,13 +54,13 @@ jobs:
         run: |
           if [[ ! -z "${{ inputs.keep-since }}" ]]
           then
-            echo "::set-output name=condition::--keep-since=${{ inputs.keep-since }}"
+            echo "::set-output name=condition::--keep-since '${{ inputs.keep-since }}'"
           elif [[ ! -z "${{ inputs.delete-before }}" ]]
           then
-            echo "::set-output name=condition::--delete-before='${{ inputs.delete-before }}'"
+            echo "::set-output name=condition::--delete-before '${{ inputs.delete-before }}'"
           elif [[ ! -z "${{ inputs.limit-number }}" ]]
           then
-            echo "::set-output name=condition::--limit-number=${{ inputs.limit-number }}"
+            echo "::set-output name=condition::--limit-number ${{ inputs.limit-number }}"
           else
             echo "::set-output name=condition::"
           fi
@@ -68,4 +68,4 @@ jobs:
       - name: Execute ACC tool
         uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:latest
         with:
-          args: -a ${{ inputs.app-regexp }} ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
+          args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
