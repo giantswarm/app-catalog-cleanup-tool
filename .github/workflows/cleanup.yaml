@@ -31,12 +31,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Check for dry-run
+        id: dry-run
+        run: |
+          echo ${{ inputs.dry-run }}
+          if [ "${{ inputs.dry-run }}" = true ]
+          then
+            echo "::set-output name=dry-run::--dry-run"
+          else
+            echo "::set-output name=dry-run::"
+          fi
+
       - name: Execute ACC tool
         uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:latest
         with:
-          args: .
+          args: . -a ${{ inputs.app-regexp }} -s ACCT_KEEP_SINCE: ${{ inputs.keep-since }} ${{ steps.dry-run.outputs.dry-run }}
         env:
           ACCT_APP_REGEXP: ${{ inputs.app-regexp }}
           ACCT_KEEP_SINCE: ${{ inputs.keep-since }}
-          ACCT_DEBUG: ${{ inputs.debug }}
-          ACCT_DRY_RUN: ${{ inputs.dry-run }}
