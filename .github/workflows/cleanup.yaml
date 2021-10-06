@@ -9,10 +9,17 @@ on:
         required: false
         type: string
       keep-since:
-        description: "Entries older than this timestamp will be removed"
-        default: "2020-01-01"
+        description: "A full date-time. Catalog entries older than this timestamp will be removed"
         required: false
         type: string
+      delete-before:
+        description: "A time delta (like '3 days' or '4 weeks') to keep catalog entries. Catalog entries older will be removed"
+        required: false
+        type: string
+      limit-number:
+        description: "Most recent versions to keep in the catalog"
+        required: false
+        type: number
       debug:
         description: "Enable debug mode"
         default: true
@@ -26,7 +33,7 @@ on:
 
 jobs:
   cleanup:
-    name: Run the ACC tool
+    name: Run the ACCT tool
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -35,7 +42,6 @@ jobs:
       - name: Check for dry-run
         id: dry-run
         run: |
-          echo ${{ inputs.dry-run }}
           if [ "${{ inputs.dry-run }}" = true ]
           then
             echo "::set-output name=dry-run::--dry-run"
@@ -43,10 +49,15 @@ jobs:
             echo "::set-output name=dry-run::"
           fi
 
+      - name: Conclude condition
+        id: condition
+        run: |
+          [ -z "${{ inputs.keep-since }}" ] || echo "::set-output name=condition::--keep-since=${{ inputs.keep-since }}"; exit 0
+          [ -z "${{ inputs.delete-before }}" ] || echo "::set-output name=condition::--delete-before=${{ inputs.delete-before }}"; exit 0
+          [ -z "${{ inputs.limit-number }}" ] || echo "::set-output name=condition::--limit-number=${{ inputs.limit-number }}"; exit 0
+          echo "::set-output name=condition::"
+
       - name: Execute ACC tool
         uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:latest
         with:
-          args: -a ${{ inputs.app-regexp }} -s ${{ inputs.keep-since }} ${{ steps.dry-run.outputs.dry-run }} .
-        env:
-          ACCT_APP_REGEXP: ${{ inputs.app-regexp }}
-          ACCT_KEEP_SINCE: ${{ inputs.keep-since }}
+          args: -a ${{ inputs.app-regexp }} ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
