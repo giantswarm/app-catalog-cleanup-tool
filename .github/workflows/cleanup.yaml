@@ -1,0 +1,40 @@
+name: App Catalog Cleanup
+
+on:
+  workflow_call:
+    inputs:
+      app-regexp:
+        description: "Regexp of app names the cleanup will apply to"
+        default: ".*"
+        required: false
+        type: string
+      keep-since:
+        description: "Entries older than this timestamp will be removed"
+        default: "2020-01-01"
+        required: false
+        type: string
+      debug:
+        description: "Enable debug mode"
+        default: true
+        required: false
+        type: boolean
+      dry-run:
+        description: "Enable dry-run mode"
+        default: true
+        required: false
+        type: boolean
+
+jobs:
+  cleanup:
+    name: Run the ACC tool
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Execute ACC tool
+        uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:latest
+        env:
+          ACCT_APP_REGEXP: ${{ inputs.app-regexp }}
+          ACCT_KEEP_SINCE: ${{ inputs.keep-since }}
+          ACCT_DEBUG: ${{ inputs.debug }}
+          ACCT_DRY_RUN: ${{ inputs.dry-run }}
