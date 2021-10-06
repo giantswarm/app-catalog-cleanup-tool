@@ -46,7 +46,7 @@ jobs:
       - name: Execute ACC tool
         uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:latest
         with:
-          args: . -a ${{ inputs.app-regexp }} -s ACCT_KEEP_SINCE: ${{ inputs.keep-since }} ${{ steps.dry-run.outputs.dry-run }}
+          args: -a ${{ inputs.app-regexp }} -s ${{ inputs.keep-since }} ${{ steps.dry-run.outputs.dry-run }} .
         env:
           ACCT_APP_REGEXP: ${{ inputs.app-regexp }}
           ACCT_KEEP_SINCE: ${{ inputs.keep-since }}
