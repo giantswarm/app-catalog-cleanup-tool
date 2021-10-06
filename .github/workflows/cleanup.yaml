@@ -57,7 +57,7 @@ jobs:
             echo "::set-output name=condition::--keep-since=${{ inputs.keep-since }}"
           elif [[ ! -z "${{ inputs.delete-before }}" ]]
           then
-            echo "::set-output name=condition::--delete-before=${{ inputs.delete-before }}"
+            echo "::set-output name=condition::--delete-before='${{ inputs.delete-before }}'"
           elif [[ ! -z "${{ inputs.limit-number }}" ]]
           then
             echo "::set-output name=condition::--limit-number=${{ inputs.limit-number }}"
