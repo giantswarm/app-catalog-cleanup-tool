@@ -45,7 +45,6 @@ jobs:
       - name: Check for dry-run
         id: dry-run
         run: |
-          echo ${{ secrets.token }}
           if [ ${{ inputs.dry-run }} = true ]
           then
             echo '::set-output name=dry-run::--dry-run'
@@ -88,7 +87,7 @@ jobs:
         if: ${{ inputs.dry-run }}
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.token }}
+          token: ${{ github.token }}
           title: Periodic App Catalog Cleanup
           commit-message: Periodic App Catalog Cleanup
           branch: cleanup/acct-run
