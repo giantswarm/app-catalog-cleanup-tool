@@ -30,6 +30,9 @@ on:
         default: true
         required: false
         type: boolean
+    secrets:
+      token:
+        required: true
 
 jobs:
   cleanup:
@@ -84,7 +87,7 @@ jobs:
         if: ${{ inputs.dry-run }}
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.token }}
           title: Periodic App Catalog Cleanup
           commit-message: Periodic App Catalog Cleanup
           branch: cleanup/acct-run
