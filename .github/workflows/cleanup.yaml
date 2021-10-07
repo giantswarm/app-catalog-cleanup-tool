@@ -84,7 +84,7 @@ jobs:
           args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} ${{ steps.dry-run.outputs.dry-run }} .
 
       - name: Create Pull Request
-        if: ${{ inputs.dry-run }}
+        if: ${{ ! inputs.dry-run }}
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ github.token }}
