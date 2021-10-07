@@ -33,7 +33,7 @@ on:
 
 jobs:
   cleanup:
-    name: Run the ACCT tool
+    name: Run the ACC tool
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -47,6 +47,16 @@ jobs:
             echo '::set-output name=dry-run::--dry-run'
           else
             echo '::set-output name=dry-run::'
+          fi
+
+      - name: Check for debug
+        id: debug
+        run: |
+          if [ ${{ inputs.debug }} = true ]
+          then
+            echo '::set-output name=debug::debug'
+          else
+            echo '::set-output name=debug::'
           fi
 
       - name: Conclude condition
@@ -68,4 +78,22 @@ jobs:
       - name: Execute ACC tool
         uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:latest
         with:
-          args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
+          args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} ${{ steps.dry-run.outputs.dry-run }} .
+
+      - name: Create Pull Request
+        if: ${{ inputs.dry-run }}
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Periodic App Catalog Cleanup
+          commit-message: Periodic App Catalog Cleanup
+          branch: cleanup/acct-run
+          draft: true
+          body: |
+            Periodic cleanup.
+
+            - Application Regexp: ${{ inputs.app-regexp }}
+            - Cleanup Condition: ${{ steps.condition.outputs.condition }}
+            - Created By: [ACCT Github Workflow][1]
+
+            [1]: https://raw.githubusercontent.com/giantswarm/app-catalog-cleanup-tool/feature/cleanup-workflow/.github/workflows/cleanup.yaml
