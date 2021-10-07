@@ -45,6 +45,7 @@ jobs:
       - name: Check for dry-run
         id: dry-run
         run: |
+          echo ${{ secrets.token }}
           if [ ${{ inputs.dry-run }} = true ]
           then
             echo '::set-output name=dry-run::--dry-run'
