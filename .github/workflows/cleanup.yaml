@@ -57,7 +57,7 @@ jobs:
         run: |
           if [ ${{ inputs.debug }} = true ]
           then
-            echo '::set-output name=debug::debug'
+            echo '::set-output name=debug::--debug'
           else
             echo '::set-output name=debug::'
           fi
