@@ -39,6 +39,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Ignore index.yaml.back file
+        run: echo "index.yaml.back" >> .git/info/exclude
+
       - name: Check for dry-run
         id: dry-run
         run: |
@@ -92,8 +95,8 @@ jobs:
           body: |
             Periodic cleanup.
 
-            - Application Regexp: ${{ inputs.app-regexp }}
-            - Cleanup Condition: ${{ steps.condition.outputs.condition }}
+            - Application Regexp: `${{ inputs.app-regexp }}`
+            - Cleanup Condition: `${{ steps.condition.outputs.condition }}`
             - Created By: [ACCT Github Workflow][1]
 
             [1]: https://raw.githubusercontent.com/giantswarm/app-catalog-cleanup-tool/feature/cleanup-workflow/.github/workflows/cleanup.yaml
