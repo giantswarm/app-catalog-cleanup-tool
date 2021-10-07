@@ -90,7 +90,8 @@ jobs:
           token: ${{ github.token }}
           title: Periodic App Catalog Cleanup
           commit-message: Periodic App Catalog Cleanup
-          branch: cleanup/acct-run
+          branch: cleanup/acct-run-${{ github.run_id }}
+          delete-branch: true
           draft: true
           body: |
             Periodic cleanup.
