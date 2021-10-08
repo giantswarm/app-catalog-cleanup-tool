@@ -16,5 +16,6 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 - Initial commit
 
+[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.1.2...HEAD
 [0.1.2]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/giantswarm/app-catalog-cleanup-tool/releases/tag/v0.1.1
