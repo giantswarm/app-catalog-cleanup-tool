@@ -2,9 +2,18 @@
 
 Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## [Unreleased]
 
-### added
+## [0.2.0]
+
+### Added
+
+- Add [Reusable Workflow](https://docs.github.com/en/actions/learn-github-actions/reusing-workflows) to be called from the App Catalogs repositories.
+
+## [0.1.2]
+
+## [0.1.1]
+
+### Added
 
 - Initial commit
