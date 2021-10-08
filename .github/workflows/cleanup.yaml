@@ -91,7 +91,7 @@ jobs:
           title: Periodic App Catalog Cleanup
           commit-message: Periodic App Catalog Cleanup
           branch: cleanup/acct-run-${{ github.run_id }}
-          reviewers: giantswarm/team-honeybadger
+          team-reviewers: giantswarm/team-honeybadger
           delete-branch: true
           draft: true
           body: |
