@@ -1,0 +1,104 @@
+name: App Catalog Cleanup
+
+on:
+  workflow_call:
+    inputs:
+      app-regexp:
+        description: "Regexp of app names the cleanup will apply to"
+        default: ".*"
+        required: false
+        type: string
+      keep-since:
+        description: "A full date-time. Catalog entries older than this timestamp will be removed"
+        required: false
+        type: string
+      delete-before:
+        description: "A time delta (like '3 days' or '4 weeks') to keep catalog entries. Catalog entries older will be removed"
+        required: false
+        type: string
+      limit-number:
+        description: "Most recent versions to keep in the catalog"
+        required: false
+        type: string
+      debug:
+        description: "Enable debug mode"
+        default: true
+        required: false
+        type: boolean
+      dry-run:
+        description: "Enable dry-run mode"
+        default: true
+        required: false
+        type: boolean
+
+jobs:
+  cleanup:
+    name: Run the ACC tool
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Ignore index.yaml.back file
+        run: echo "index.yaml.back" >> .git/info/exclude
+
+      - name: Check for dry-run
+        id: dry-run
+        run: |
+          if [ ${{ inputs.dry-run }} = true ]
+          then
+            echo '::set-output name=dry-run::--dry-run'
+          else
+            echo '::set-output name=dry-run::'
+          fi
+
+      - name: Check for debug
+        id: debug
+        run: |
+          if [ ${{ inputs.debug }} = true ]
+          then
+            echo '::set-output name=debug::--debug'
+          else
+            echo '::set-output name=debug::'
+          fi
+
+      - name: Conclude condition
+        id: condition
+        run: |
+          if [[ ! -z "${{ inputs.keep-since }}" ]]
+          then
+            echo '::set-output name=condition::--keep-since "${{ inputs.keep-since }}"'
+          elif [[ ! -z "${{ inputs.delete-before }}" ]]
+          then
+            echo '::set-output name=condition::--delete-before "${{ inputs.delete-before }}"'
+          elif [[ ! -z "${{ inputs.limit-number }}" ]]
+          then
+            echo '::set-output name=condition::--limit-number ${{ inputs.limit-number }}'
+          else
+            echo '::set-output name=condition::'
+          fi
+
+      - name: Execute ACC tool
+        uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:0.1.2
+        with:
+          args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} ${{ steps.dry-run.outputs.dry-run }} .
+
+      - name: Create Pull Request
+        if: ${{ ! inputs.dry-run }}
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ github.token }}
+          title: Periodic App Catalog Cleanup
+          commit-message: Periodic App Catalog Cleanup
+          branch: cleanup/acct-run-${{ github.run_id }}
+          team-reviewers: giantswarm/team-honeybadger
+          delete-branch: true
+          draft: true
+          body: |
+            Periodic cleanup.
+
+            - Application Regexp: `${{ inputs.app-regexp }}`
+            - Cleanup Condition: `${{ steps.condition.outputs.condition }}`
+            - Created By: [ACCT Github Workflow][1]
+
+            [1]: https://raw.githubusercontent.com/giantswarm/app-catalog-cleanup-tool/feature/cleanup-workflow/.github/workflows/cleanup.yaml
