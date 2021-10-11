@@ -4,6 +4,8 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+## [0.2.2] - 2021-10-11
+
 ### Removed
 
 - Remove `team-reviewers` from the action in favour of the CODEOWNERS
@@ -24,7 +26,8 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 - Initial commit
 
-[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.1.1...v0.1.2
