@@ -4,6 +4,10 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+### Removed
+
+- Remove `team-reviewers` from the action in favour of the CODEOWNERS
+
 ## [0.2.1] - 2021-10-11
 
 ## [0.2.0] - 2021-10-08
