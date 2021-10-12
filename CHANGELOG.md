@@ -4,6 +4,10 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+### Changed
+
+- Disable draft PRs in the cleanup workflow
+
 ## [0.2.2] - 2021-10-11
 
 ### Removed
