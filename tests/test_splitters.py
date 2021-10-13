@@ -22,6 +22,7 @@ from tests.test_helpers import Entries, test_entries, test_index_yaml  # noqa: F
             {
                 "linkerd2-app": [
                     "linkerd2-app-0.1.0.tgz",
+                    "linkerd2-app-0.1.1.tgz",
                     "linkerd2-app-0.0.0-25ecb7f4e6c03e719599e78c750047c931cafe1a.tgz",
                 ],
                 "loki-stack-app": ["loki-stack-app-0.1.0.tgz"],
@@ -30,24 +31,24 @@ from tests.test_helpers import Entries, test_entries, test_index_yaml  # noqa: F
         # date: keep everything
         (
             DateSplitter(datetime.datetime.now(pytz.utc) - relativedelta(years=10)),
-            {"linkerd2-app": [0, 1], "loki-stack-app": [0]},
+            {"linkerd2-app": [0, 1, 2], "loki-stack-app": [0]},
             {"linkerd2-app": [], "loki-stack-app": []},
         ),
         # date: keep 1 each
         (
-            DateSplitter(parser.isoparse("2019-12-02 15:00Z")),
-            {"linkerd2-app": [1], "loki-stack-app": []},
+            DateSplitter(parser.isoparse("2019-12-02 16:00Z")),
+            {"linkerd2-app": [2], "loki-stack-app": []},
             {
-                "linkerd2-app": ["linkerd2-app-0.1.0.tgz"],
+                "linkerd2-app": ["linkerd2-app-0.1.0.tgz", "linkerd2-app-0.1.1.tgz"],
                 "loki-stack-app": ["loki-stack-app-0.1.0.tgz"],
             },
         ),
         # limit: keep 1 each
         (
             LimitSplitter(1),
-            {"linkerd2-app": [1], "loki-stack-app": []},
+            {"linkerd2-app": [2], "loki-stack-app": []},
             {
-                "linkerd2-app": ["linkerd2-app-0.1.0.tgz"],
+                "linkerd2-app": ["linkerd2-app-0.1.0.tgz", "linkerd2-app-0.1.1.tgz"],
                 "loki-stack-app": [],
             },
         ),
