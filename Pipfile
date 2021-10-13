@@ -14,7 +14,7 @@ aiofiles = "*"
 configargparse = "*"
 tempora = "*"
 python-dateutil = "*"
-pyyaml = "*"
+ruamel-yaml = "*"
 
 [requires]
 python_version = "3.9"

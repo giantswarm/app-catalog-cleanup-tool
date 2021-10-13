@@ -9,7 +9,7 @@ from typing import List
 
 import aiofiles
 import aiofiles.os
-import yaml
+from ruamel.yaml import YAML
 
 from app_catalog_cleanup_tool.config import ValidatedConfig, configure, validate
 
@@ -19,7 +19,11 @@ logger = logging.getLogger(__name__)
 async def clean_catalog(cfg: ValidatedConfig) -> None:
     to_remove = await clean_index(cfg)
     if not cfg.dry_run:
-        del_tasks = [aiofiles.os.remove(os.path.join(cfg.path, name)) for name in to_remove]
+        del_tasks = [
+            aiofiles.os.remove(os.path.join(cfg.path, name))
+            for name in to_remove
+            if os.path.exists(os.path.join(cfg.path, name))
+        ]
         await asyncio.gather(*del_tasks)
     # TODO: the part below would probably also benefit a little from running as async, but `aiofiles` doesn't
     #  currently provide `rmtree`, only `rmdir`, so skipping for now
@@ -34,9 +38,13 @@ async def clean_catalog(cfg: ValidatedConfig) -> None:
 
 
 async def clean_index(cfg: ValidatedConfig) -> List[str]:
+    yaml = YAML(typ="rt")
+    yaml.default_flow_style = False
+    yaml.preserve_quotes = True
+
     async with aiofiles.open(cfg.index_yaml, mode="r") as f:
         raw_yaml = await f.read()
-        index_yaml = yaml.safe_load(raw_yaml)
+        index_yaml = yaml.load(raw_yaml)
     to_remove = []
     entries = index_yaml["entries"]
     logger.debug(f"Loaded {len(entries)} app entries from the catalog index.")
@@ -60,7 +68,12 @@ async def clean_index(cfg: ValidatedConfig) -> List[str]:
     if not cfg.dry_run:
         shutil.move(cfg.index_yaml, cfg.index_yaml + ".back")
         async with aiofiles.open(cfg.index_yaml, mode="w") as f:
-            await f.write(yaml.dump(new_index_yaml, default_flow_style=False))
+            import io
+
+            new_index_yaml_io = io.StringIO()
+
+            yaml.dump(new_index_yaml, new_index_yaml_io)
+            await f.write(new_index_yaml_io.getvalue())
 
     return to_remove
 
