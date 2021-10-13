@@ -19,7 +19,11 @@ logger = logging.getLogger(__name__)
 async def clean_catalog(cfg: ValidatedConfig) -> None:
     to_remove = await clean_index(cfg)
     if not cfg.dry_run:
-        del_tasks = [aiofiles.os.remove(os.path.join(cfg.path, name)) for name in to_remove]
+        del_tasks = [
+            aiofiles.os.remove(os.path.join(cfg.path, name))
+            for name in to_remove
+            if os.path.exists(os.path.join(cfg.path, name))
+        ]
         await asyncio.gather(*del_tasks)
     # TODO: the part below would probably also benefit a little from running as async, but `aiofiles` doesn't
     #  currently provide `rmtree`, only `rmdir`, so skipping for now
