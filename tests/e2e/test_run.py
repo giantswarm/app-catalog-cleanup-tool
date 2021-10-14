@@ -42,9 +42,16 @@ def test_run_catalog_cleanup(mocker: MockerFixture, test_index_yaml: str):  # no
     assert async_open_mock.call_args_list[1] == call(TEST_INDEX_YAML_PATH, mode="w")
     assert async_open_mock.call_count == 2
     # required chart file was removed
+    # os.remove should not be executed for nonexisting `linkerd2-app-0.1.1.tgz`
     aio_remove_mock = cast(AsyncMock, app_catalog_cleanup_tool.__main__.aiofiles.os.remove)
     aio_remove_mock.assert_called_once_with(TEST_CATALOG_PATH + "/linkerd2-app-0.1.0.tgz")
+
     # meta dir was removed
-    cast(MagicMock, app_catalog_cleanup_tool.__main__.shutil.rmtree).assert_called_once_with(
-        TEST_CATALOG_PATH + "/linkerd2-app-0.1.0.tgz-meta"
+    rmtree_mock = cast(MagicMock, app_catalog_cleanup_tool.__main__.shutil.rmtree)
+    rmtree_mock.assert_has_calls(
+        [
+            call(TEST_CATALOG_PATH + "/linkerd2-app-0.1.0.tgz-meta"),
+            call(TEST_CATALOG_PATH + "/linkerd2-app-0.1.1.tgz-meta"),
+        ],
+        any_order=True,
     )
