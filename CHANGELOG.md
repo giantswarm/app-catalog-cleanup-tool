@@ -4,6 +4,10 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+### Added
+
+- Condition for the Chart archive existence
+
 ## [0.2.3] - 2021-10-12
 
 ### Changed
