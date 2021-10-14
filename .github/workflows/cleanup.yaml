@@ -79,9 +79,20 @@ jobs:
           fi
 
       - name: Execute ACC tool
-        uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:0.1.2
+        uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:0.2.4
         with:
           args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} ${{ steps.dry-run.outputs.dry-run }} .
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.4.0
+
+      - name: Recreate the repository index.yaml
+        run: |
+          mkdir /tmp/build.tmp
+          helm repo index --url "https://giantswarm.github.io/$(echo -n ${{ env.GITHUB_REPOSITORY }} | cut -d '/' -f2)" --merge index.yaml /tmp/build.tmp
+          sudo cp /tmp/build.tmp/index.yaml .
 
       - name: Create Pull Request
         if: ${{ ! inputs.dry-run }}
