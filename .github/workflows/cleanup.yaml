@@ -92,7 +92,8 @@ jobs:
         run: |
           mkdir /tmp/build.tmp
           helm repo index --url "https://giantswarm.github.io/$(echo -n ${{ env.GITHUB_REPOSITORY }} | cut -d '/' -f2)" --merge index.yaml /tmp/build.tmp
-          cp /tmp/build.tmp/index.yaml .
+          ls -l /tmp/build.tmp/
+          cp /tmp/build.tmp/* .
 
       - name: Create Pull Request
         if: ${{ ! inputs.dry-run }}
