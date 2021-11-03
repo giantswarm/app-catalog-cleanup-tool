@@ -16,7 +16,7 @@ from tests.test_helpers import (  # noqa: F401
 )
 
 
-def test_run_catalog_cleanup(mocker: MockerFixture, test_index_yaml: str):  # noqa: F811
+def test_run_catalog_cleanup(mocker: MockerFixture, test_index_yaml: str) -> None:  # noqa: F811
     mocker.patch.object(sys, "argv", ["bogus", "-l", "1", "-a", ".*", "tests/assets"])
     mocker.patch("app_catalog_cleanup_tool.__main__.shutil.move")
     mocker.patch("app_catalog_cleanup_tool.__main__.shutil.rmtree")
