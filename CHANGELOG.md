@@ -6,38 +6,34 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [0.2.4] - 2021-10-14
 
-### Fixed
-
-- Do not try to remove non-existing app
-- Try to preserve standard formatting of the helm index.yaml
+- Fixed
+  - Do not try to remove non-existing app
+  - Try to preserve standard formatting of the helm index.yaml
 
 ## [0.2.3] - 2021-10-12
 
-### Changed
-
-- Disable draft PRs in the cleanup workflow
+- Changed
+  - Disable draft PRs in the cleanup workflow
 
 ## [0.2.2] - 2021-10-11
 
-### Removed
-
-- Remove `team-reviewers` from the action in favour of the CODEOWNERS
+- Removed
+  - Remove `team-reviewers` from the action in favour of the CODEOWNERS
 
 ## [0.2.1] - 2021-10-11
 
 ## [0.2.0] - 2021-10-08
 
-### Added
-
-- Add [Reusable Workflow](https://docs.github.com/en/actions/learn-github-actions/reusing-workflows) to be called from the App Catalogs repositories.
+- Added
+  - Add [Reusable Workflow](https://docs.github.com/en/actions/learn-github-actions/reusing-workflows) to be called from
+    the App Catalogs repositories.
 
 ## [0.1.2]
 
 ## [0.1.1]
 
-### Added
-
-- Initial commit
+- Added
+  - Initial commit
 
 [Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.4...HEAD
 [0.2.4]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.3...v0.2.4

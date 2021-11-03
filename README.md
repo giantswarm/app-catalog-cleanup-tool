@@ -29,8 +29,10 @@ There are currently 2 options:
 
 2. Using the dockerized version
 
-    You can use the dockerized version available as a convience script `dacct.sh`. Please note, that currently the dockerized version can work on
-    the current directory only, so you have to download the script, make it executable in your system, then run it in the directory with a catalog
+    You can use the dockerized version available as a convenience script `dacct.sh`. Please note, that currently the
+    dockerized version can work on
+    the current directory only, so you have to download the script, make it executable in your system, then run it
+    in the directory with a catalog
     giving the local directory `.` as the ast argument.
 
     Example:

@@ -13,10 +13,12 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/giantswarm/app-catalog-cleanup-tool",
     packages=setuptools.find_packages(),
+    keywords=["helm registry", "helm"],
     classifiers=[
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.9",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+        "Development Status :: 4 - Beta",
     ],
     python_requires=">=3.9",
 )
