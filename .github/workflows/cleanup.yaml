@@ -114,10 +114,10 @@ jobs:
 
             [1]: https://raw.githubusercontent.com/giantswarm/app-catalog-cleanup-tool/feature/cleanup-workflow/.github/workflows/cleanup.yaml
 
-      - name: Enable Pull Request Automerge
+      - name: Merge Pull Request
         if: steps.pull-request.outputs.pull-request-operation == 'created'
-        uses: peter-evans/enable-pull-request-automerge@v1
+        uses: juliangruber/merge-pull-request-action@v1
         with:
-          token: ${{ github.token }}
-          pull-request-number: ${{ steps.pull-request.outputs.pull-request-number }}
-          merge-method: squash
+          github-token: ${{ github.token }}
+          number: ${{ steps.pull-request.outputs.pull-request-number }}
+          method: squash
