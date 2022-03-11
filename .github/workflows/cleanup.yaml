@@ -95,6 +95,7 @@ jobs:
           sudo cp /tmp/build.tmp/index.yaml .
 
       - name: Create Pull Request
+        id: pull-request
         if: ${{ ! inputs.dry-run }}
         uses: peter-evans/create-pull-request@v3
         with:
@@ -112,3 +113,11 @@ jobs:
             - Created By: [ACCT Github Workflow][1]
 
             [1]: https://raw.githubusercontent.com/giantswarm/app-catalog-cleanup-tool/feature/cleanup-workflow/.github/workflows/cleanup.yaml
+
+      - name: Merge Pull Request
+        if: steps.pull-request.outputs.pull-request-operation == 'created'
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ github.token }}
+          number: ${{ steps.pull-request.outputs.pull-request-number }}
+          method: squash
