@@ -4,6 +4,8 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+## [0.2.5] - 2022-03-11
+
 ## [0.2.4] - 2021-10-14
 
 - Fixed
@@ -35,7 +37,8 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 - Added
   - Initial commit
 
-[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.4...HEAD
+[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.5...HEAD
+[0.2.5]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.1...v0.2.2
