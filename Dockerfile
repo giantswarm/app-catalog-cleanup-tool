@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8 \
     ACCT_DIR="/acct" \
     PIPENV_VER="2021.5.29"
 
-RUN pip install --no-cache-dir pipenv==${PIPENV_VER}
+RUN RUN pip install --upgrade pip && pip install --no-cache-dir pipenv==${PIPENV_VER}
 
 WORKDIR $ACCT_DIR
 
