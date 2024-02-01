@@ -38,7 +38,7 @@ workflows:
 jobs:
   run-tests:
     machine:
-      image: ubuntu-2204:current
+      image: ubuntu-2004:202010-01
     steps:
       - checkout
 
