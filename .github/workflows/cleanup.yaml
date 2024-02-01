@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Ignore index.yaml.back file
         run: echo "index.yaml.back" >> .git/info/exclude
