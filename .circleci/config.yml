@@ -10,7 +10,7 @@ workflows:
       - run-tests:
           name: run-tests
           filters:
-                        # Needed to trigger job also on git tag.
+            # Needed to trigger job also on git tag.
             tags:
               only: /^v.*/
 
@@ -20,7 +20,7 @@ workflows:
           requires:
             - run-tests
           filters:
-                        # Needed to trigger job also on git tag.
+            # Needed to trigger job also on git tag.
             tags:
               only: /^v.*/
 
@@ -38,7 +38,7 @@ workflows:
 jobs:
   run-tests:
     machine:
-      image: ubuntu-2004:202010-01
+      image: default
     steps:
       - checkout
 
