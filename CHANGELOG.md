@@ -4,6 +4,10 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+## [0.2.6] - 2024-02-13
+- Update
+    - Stop using deprecated set outputs
+
 ## [0.2.5] - 2022-03-11
 
 ## [0.2.4] - 2021-10-14
