@@ -1,6 +1,11 @@
 # Image URL to use all building/pushing image targets
 IMG ?= gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool
 
+# ---------------------------------------------------------------------
+# -- Which container tool to use
+# ---------------------------------------------------------------------
+CONTAINER_TOOL ?= docker
+
 export VER ?= $(shell git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
 export COMMIT ?= $(shell git rev-parse HEAD 2>/dev/null || echo "0000000000000000000000000000000000000000")
 export SHORT_COMMIT ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "0000000")
@@ -37,22 +42,22 @@ release_ver_to_code:
 docker-build: docker-build-ver docker-build-image
 
 docker-build-image:
-	docker build . -t ${IMG}:latest -t ${IMG}:${IMG_VER}
+	$(CONTAINER_TOOL) build . -t ${IMG}:latest -t ${IMG}:${IMG_VER}
 
 docker-build-ver:
 	echo "build_ver = \"${VER}-${COMMIT}\"" > app_catalog_cleanup_tool/version.py
 
 # Push the docker image
 docker-push: docker-build
-	docker push ${IMG}:${IMG_VER}
+	$(CONTAINER_TOOL) push ${IMG}:${IMG_VER}
 
 docker-build-test: docker-build
-	docker build -f testrunner.Dockerfile . -t ${IMG}-test:latest
+	$(CONTAINER_TOOL) build -f testrunner.Dockerfile . -t ${IMG}-test:latest
 
 test-command = --cov app_catalog_cleanup_tool --log-cli-level info tests/
 test-command-ci = --cov-report=xml $(test-command)
 test-docker-args = run -it --rm -v ${PWD}/.coverage/:/acct/.coverage/
-test-docker-run = docker $(test-docker-args) ${IMG}-test:latest
+test-docker-run = $(CONTAINER_TOOL) $(test-docker-args) ${IMG}-test:latest
 
 test:
 	pipenv run python -m pytest $(test-command)
