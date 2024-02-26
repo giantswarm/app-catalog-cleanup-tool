@@ -53,7 +53,7 @@ jobs:
           command: sudo chown -R circleci.circleci .coverage/
 
       - codecov/upload:
-          cli_args: ["-v"]
+          cli_args: "-v"
           # file: .coverage/coverage.xml
 
   publish-github-release:
