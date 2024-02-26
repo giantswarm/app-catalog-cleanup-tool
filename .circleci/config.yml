@@ -49,6 +49,9 @@ jobs:
       - run:
           command: pwd && ls -la
 
+      - run:
+          command: chown -R circleci.circleci .coverage/
+
       - codecov/upload:
           file: .coverage/coverage.xml
 
