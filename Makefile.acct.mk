@@ -1,5 +1,5 @@
 # Image URL to use all building/pushing image targets
-IMG ?= quay.io/giantswarm/app-catalog-cleanup-tool
+IMG ?= gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool
 
 export VER ?= $(shell git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
 export COMMIT ?= $(shell git rev-parse HEAD 2>/dev/null || echo "0000000000000000000000000000000000000000")

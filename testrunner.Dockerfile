@@ -1,4 +1,4 @@
-FROM quay.io/giantswarm/app-catalog-cleanup-tool:latest
+FROM gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:latest
 
 ARG ACCT_DIR="/ats"
 
