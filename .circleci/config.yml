@@ -47,7 +47,7 @@ jobs:
             make docker-test-ci
 
       - run:
-          command: pwd && ls -la
+          command: ls -la .coverage
 
       - run:
           command: sudo chown -R circleci .coverage/
