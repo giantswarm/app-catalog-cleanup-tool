@@ -50,7 +50,7 @@ jobs:
           command: pwd && ls -la
 
       - run:
-          command: chown -R circleci.circleci .coverage/
+          command: sudo chown -R circleci.circleci .coverage/
 
       - codecov/upload:
           file: .coverage/coverage.xml
