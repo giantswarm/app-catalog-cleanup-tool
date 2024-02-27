@@ -48,15 +48,6 @@ jobs:
           command: |
             make docker-test-ci
 
-      - run:
-          command: echo $PWD
-
-      - run:
-          command: pwd && ls -la .coverage
-
-      - run:
-          command: sudo chown -R circleci.circleci .coverage/
-
       - codecov/upload:
           cli_args: "-v"
           # file: .coverage/coverage.xml
