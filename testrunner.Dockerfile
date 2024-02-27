@@ -1,6 +1,6 @@
 FROM gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:latest
 
-ARG ACCT_DIR="/ats"
+ARG ACCT_DIR="/acct"
 
 RUN pip install --no-cache-dir -U pipenv
 RUN apt-get update && apt-get install -y wget git xz-utils && rm -rf /var/lib/apt/lists/*
