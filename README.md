@@ -70,3 +70,9 @@ and run:
 pipenv install -d
 pipenv run pre-commit install --install-hooks
 ```
+
+## Update catalog repos
+
+Since renovate bot doesn't work for catalog repos, one can use a script `./bin/update-catalag-repos`. It should be executed from the root of this project.
+
+It depends on yq and github-cli, os both of them must be installed and configured.
