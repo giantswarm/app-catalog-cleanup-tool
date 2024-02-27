@@ -48,9 +48,6 @@ jobs:
           command: |
             make docker-test-ci
 
-      - codecov/upload:
-          cli_args: "-v"
-
       - run:
           command: pwd && ls -la
 
