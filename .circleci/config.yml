@@ -10,7 +10,7 @@ workflows:
       - run-tests:
           name: run-tests
           filters:
-                        # Needed to trigger job also on git tag.
+            # Needed to trigger job also on git tag.
             tags:
               only: /^v.*/
 
@@ -20,7 +20,7 @@ workflows:
           requires:
             - run-tests
           filters:
-                        # Needed to trigger job also on git tag.
+            # Needed to trigger job also on git tag.
             tags:
               only: /^v.*/
 
@@ -34,13 +34,14 @@ workflows:
             tags:
               only: /^v.*/
 
-
 jobs:
   run-tests:
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2204:2024.01.1
     steps:
       - checkout
+      - run:
+          command: mkdir -p .coverage
 
       - run:
           name: Execute tests
@@ -48,7 +49,8 @@ jobs:
             make docker-test-ci
 
       - codecov/upload:
-          file: .coverage/coverage.xml
+          cli_args: "-v"
+          # file: .coverage/coverage.xml
 
   publish-github-release:
     docker:

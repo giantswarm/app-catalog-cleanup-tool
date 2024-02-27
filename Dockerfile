@@ -1,13 +1,12 @@
-FROM python:3.9.7-slim AS base
+FROM python:3.12.2-slim AS base
 
 ENV LANG=C.UTF-8 \
-    LC_ALL=C.UTF-8 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONFAULTHANDLER=1 \
-    ACCT_DIR="/acct" \
-    PIPENV_VER="2021.5.29"
+  LC_ALL=C.UTF-8 \
+  PYTHONDONTWRITEBYTECODE=1 \
+  PYTHONFAULTHANDLER=1 \
+  ACCT_DIR="/acct"
 
-RUN pip install --no-cache-dir pipenv==${PIPENV_VER}
+RUN pip install --no-cache-dir -U pipenv
 
 WORKDIR $ACCT_DIR
 
@@ -16,8 +15,8 @@ FROM base as builder
 
 # pip prerequesties
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y gcc && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+  apt-get install --no-install-recommends -y gcc && \
+  apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY Pipfile Pipfile.lock ./
 
@@ -27,14 +26,14 @@ RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy --clear
 FROM base
 
 ENV USE_UID=0 \
-    USE_GID=0 \
-    PATH="${ACCT_DIR}/.venv/bin:$PATH" \
-    PYTHONPATH=$ACCT_DIR
+  USE_GID=0 \
+  PATH="${ACCT_DIR}/.venv/bin:$PATH" \
+  PYTHONPATH=$ACCT_DIR
 
 # install dependencies
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y sudo && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+  apt-get install --no-install-recommends -y sudo && \
+  apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder ${ACCT_DIR}/.venv ${ACCT_DIR}/.venv
 

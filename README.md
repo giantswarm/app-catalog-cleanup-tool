@@ -21,45 +21,45 @@ For a list of available conditions, please run with `--help|-h`.
 
 There are currently 2 options:
 
-1. Using your native python 3.9 instalation.
+1. Using your native python 3 installation.
 
-    - Checkout the source code from repository
-    - Run `pipenv install`
-    - Start the tool using `pipenv run python -m app_catalog_cleanup_tool ...`
+   - Checkout the source code from repository
+   - Run `pipenv install`
+   - Start the tool using `pipenv run python -m app_catalog_cleanup_tool ...`
 
 2. Using the dockerized version
 
-    You can use the dockerized version available as a convenience script `dacct.sh`. Please note, that currently the
-    dockerized version can work on
-    the current directory only, so you have to download the script, make it executable in your system, then run it
-    in the directory with a catalog
-    giving the local directory `.` as the ast argument.
+   You can use the dockerized version available as a convenience script `dacct.sh`. Please note, that currently the
+   dockerized version can work on
+   the current directory only, so you have to download the script, make it executable in your system, then run it
+   in the directory with a catalog
+   giving the local directory `.` as the ast argument.
 
-    Example:
+   Example:
 
-    ```bash
-    dacct.sh -a ".*" -s "2020-02-01" -d -n .
-    ```
+   ```bash
+   dacct.sh -a ".*" -s "2020-02-01" -d -n .
+   ```
 
 ## Examples
 
 1. Remove all app entries for the `linkerd2-app` that are older than '2019-01-01' for the catalog stored in `/tmp/giantswarm-playground-catalog`
 
-    ```bash
-    python -m app_catalog_cleanup_tool -a "linkerd2-app" -s "2019-01-01" /tmp/giantswarm-playground-catalog
-    ```
+   ```bash
+   python -m app_catalog_cleanup_tool -a "linkerd2-app" -s "2019-01-01" /tmp/giantswarm-playground-catalog
+   ```
 
 2. Remove all app entries older than 4 weeks for the catalog stored in `/tmp/giantswarm-playground-catalog`
 
-    ```bash
-    python -m app_catalog_cleanup_tool -a ".*" -b "4 weeks" /tmp/giantswarm-playground-catalog
-    ```
+   ```bash
+   python -m app_catalog_cleanup_tool -a ".*" -b "4 weeks" /tmp/giantswarm-playground-catalog
+   ```
 
 3. Keep at most the 3 most recent builds of all apps with names starting with "loki"
 
-    ```bash
-    python -m app_catalog_cleanup_tool -a "loki.*" -l 3 /tmp/giantswarm-playground-catalog
-    ```
+   ```bash
+   python -m app_catalog_cleanup_tool -a "loki.*" -l 3 /tmp/giantswarm-playground-catalog
+   ```
 
 ## Development
 
