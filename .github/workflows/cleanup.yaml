@@ -34,7 +34,7 @@ on:
 jobs:
   cleanup:
     name: Run the ACC tool
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -79,7 +79,7 @@ jobs:
           fi
 
       - name: Execute ACC tool
-        uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:0.2.6
+        uses: docker://gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:0.2.7
         with:
           args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
 

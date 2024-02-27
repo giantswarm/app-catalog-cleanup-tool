@@ -1,6 +1,5 @@
 # Image URL to use all building/pushing image targets
 IMG ?= gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool
-
 # ---------------------------------------------------------------------
 # -- Which container tool to use
 # ---------------------------------------------------------------------
