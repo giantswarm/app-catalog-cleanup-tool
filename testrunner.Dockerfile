@@ -22,6 +22,6 @@ COPY Pipfile.lock .
 COPY tests/ tests/
 RUN git init && git config --global --add safe.directory /acct
 RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy --clear --dev
-RUN pipenv run pre-commit install-hooks
+RUN pipenv run pre-commit run -a
 ENTRYPOINT ["./run-tests-in-docker.sh"]
 CMD ["--cov", "app_catalog_cleanup_tool", "--log-cli-level", "info", "tests/"]
