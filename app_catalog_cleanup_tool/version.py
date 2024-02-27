@@ -1,1 +1,1 @@
-build_ver = "0.2.6-dev"
+build_ver = "v0.2.6"
