@@ -79,7 +79,7 @@ jobs:
           fi
 
       - name: Execute ACC tool
-        uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:0.2.6
+        uses: docker://quay.io/giantswarm/app-catalog-cleanup-tool:0.2.7
         with:
           args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
 
