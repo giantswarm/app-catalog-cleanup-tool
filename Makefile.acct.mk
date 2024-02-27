@@ -56,7 +56,7 @@ docker-build-test: docker-build
 
 test-command = --cov app_catalog_cleanup_tool --log-cli-level info tests/
 test-command-ci = --cov-report=xml $(test-command)
-test-docker-args = run -it --rm -v ${PWD}/.coverage/:/acct/.coverage/:z
+test-docker-args = run -it --rm -v ${PWD}/.coverage/:/acct/.coverage/
 test-docker-run = $(CONTAINER_TOOL) $(test-docker-args) ${IMG}-test:latest
 
 test:
