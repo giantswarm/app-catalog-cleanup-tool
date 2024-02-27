@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@5.0.0
-  codecov: codecov/codecov@4.0.0
+  architect: giantswarm/architect@5.1.0
+  codecov: codecov/codecov@4.0.1
 
 workflows:
   test:
@@ -34,13 +34,14 @@ workflows:
             tags:
               only: /^v.*/
 
-
 jobs:
   run-tests:
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2204:2024.01.1
     steps:
       - checkout
+      - run:
+          command: mkdir -p .coverage
 
       - run:
           name: Execute tests
@@ -48,7 +49,8 @@ jobs:
             make docker-test-ci
 
       - codecov/upload:
-          file: .coverage/coverage.xml
+          cli_args: "-v"
+          # file: .coverage/coverage.xml
 
   publish-github-release:
     docker:

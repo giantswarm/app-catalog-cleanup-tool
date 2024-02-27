@@ -47,9 +47,9 @@ jobs:
         run: |
           if [ ${{ inputs.dry-run }} = true ]
           then
-            echo '::set-output name=dry-run::--dry-run'
+            echo "dry-run=--dry-run" >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=dry-run::'
+            echo "dry-run=" >> $GITHUB_OUTPUT
           fi
 
       - name: Check for debug
@@ -57,9 +57,9 @@ jobs:
         run: |
           if [ ${{ inputs.debug }} = true ]
           then
-            echo '::set-output name=debug::--debug'
+            echo "debug=--debug" >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=debug::'
+            echo "debug=" >> $GITHUB_OUTPUT
           fi
 
       - name: Conclude condition
@@ -67,26 +67,26 @@ jobs:
         run: |
           if [[ ! -z "${{ inputs.keep-since }}" ]]
           then
-            echo '::set-output name=condition::--keep-since "${{ inputs.keep-since }}"'
+            echo "condition=--keep-since \"${{ inputs.keep-since }}\"" >> $GITHUB_OUTPUT
           elif [[ ! -z "${{ inputs.delete-before }}" ]]
           then
-            echo '::set-output name=condition::--delete-before "${{ inputs.delete-before }}"'
+            echo "condition=--delete-before \"${{ inputs.delete-before }}\"" >> $GITHUB_OUTPUT
           elif [[ ! -z "${{ inputs.limit-number }}" ]]
           then
-            echo '::set-output name=condition::--limit-number ${{ inputs.limit-number }}'
+            echo "condition=--limit-number \"${{ inputs.limit-number }}\"" >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=condition::'
+            echo "condition=" >> $GITHUB_OUTPUT
           fi
 
       - name: Execute ACC tool
-        uses: docker://gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:0.2.5
+        uses: docker://gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:0.2.7
         with:
-          args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} ${{ steps.dry-run.outputs.dry-run }} .
+          args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
 
       - name: Setup Helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v4.0.0
         with:
-          version: v3.4.0
+          version: v3.14.0
 
       - name: Recreate the repository index.yaml
         run: |

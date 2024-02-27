@@ -4,6 +4,22 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+- Update
+  - Update python to 3.12
+  - Update python dependencies
+- Fixed
+  - Incorrect invocation of `pytest` in CI container image
+
+## [0.2.7] - 2024-02-20
+
+- Update
+  - Update setup-helm and helm versions in the cleanup action
+
+## [0.2.6] - 2024-02-13
+
+- Update
+  - Stop using deprecated set outputs
+
 ## [0.2.5] - 2022-03-11
 
 ## [0.2.4] - 2021-10-14
