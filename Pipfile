@@ -4,17 +4,17 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pre-commit = "*"
-pytest = "*"
-pytest-mock = "*"
-pytest-cov = "*"
+pre-commit = ">=2.13"
+pytest = ">=6.2.4"
+pytest-mock = ">=3.6"
+pytest-cov = ">=2.12"
 
 [packages]
-aiofiles = "*"
-configargparse = "*"
-tempora = "*"
-python-dateutil = "*"
-pyyaml = "*"
+aiofiles = ">=23"
+configargparse = ">=1.5"
+tempora = ">=5.5"
+python-dateutil = ">=2.8"
+pyyaml = ">=5.1"
 
 [requires]
 python_version = "3.12"
