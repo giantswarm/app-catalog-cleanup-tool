@@ -48,16 +48,10 @@ jobs:
           command: |
             make docker-test-ci
 
-      - run:
-          command: ls -la .coverage
-
-      - run:
-          command: sudo chown -R circleci .coverage/
-
-      - codecov/upload:
-          cli_args: "-v"
-          # file: .coverage/coverage.xml
-
+      #      - codecov/upload:
+      #          cli_args: "-v"
+      #          # file: .coverage/coverage.xml
+      #
   publish-github-release:
     docker:
       - image: cibuilds/github:0.13
