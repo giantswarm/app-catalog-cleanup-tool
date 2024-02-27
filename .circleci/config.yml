@@ -49,7 +49,7 @@ jobs:
             make docker-test-ci
 
       - run:
-          command: pwd && ls -la
+          command: echo $PWD
 
       - run:
           command: pwd && ls -la .coverage
