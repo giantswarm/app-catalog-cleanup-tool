@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+CLEANUP_VERSION=$(grep -m1 "## .* -" CHANGELOG.md | cut -d "[" -f2 | cut -d "]" -f1)
+echo "[INFO] current cleanup version is $CLEANUP_VERSION"
+
+WORKDIR=$(mktemp -d)
+echo "[INFO] workdir is $WORKDIR"
+cd $WORKDIR
+
+echo "[INFO] Getting all the repos that contain 'catalog' in the name"
+PROJECTS=$(gh repo list giantswarm --json name --jq \
+  'map(select(.name | contains ("catalog"))) | .[].name' \
+  --limit 1000 --no-archived)
+
+for PROJECT in $PROJECTS; do
+  GIT_URL=git@github.com:giantswarm/$PROJECT.git
+  echo "[INFO] Working on $PROJECT: $GIT_URL"
+  git clone "$GIT_URL"
+
+  if [[ -f "./$PROJECT/index.yaml" ]]; then
+    echo "[INFO] $PROJECT does have an index.yaml file, treating as a helm repo"
+
+    if [[ -f "./$PROJECT/.github/workflows/cleanup.yaml" ]]; then
+      echo "[INFO] $PROJECT does use the cleanup workflow, updating"
+      DEFAULT_BRANCH=$(git -C $PROJECT rev-parse --abbrev-ref HEAD)
+      NEW_VERSION=$(yq '.jobs.cleanup.uses' "$PROJECT/.github/workflows/cleanup.yaml" | sed -e "s/@.*/@v$CLEANUP_VERSION/g")
+      BRANCH_NAME="update-cleanup-to-${CLEANUP_VERSION}"
+
+      git -C $PROJECT pull
+      if ! git -C $PROJECT checkout ${BRANCH_NAME}; then
+        echo "[INFO] branch $BRANCH_NAME doesn't exist, creating"
+        git -C $PROJECT checkout -b ${BRANCH_NAME}
+      fi
+
+      yq e -i ".jobs.cleanup.uses = \"$NEW_VERSION\""  "$PROJECT/.github/workflows/cleanup.yaml"
+      echo "[INFO] git diff: $(git -C $PROJECT diff)"
+      git -C $PROJECT add .
+      git -C $PROJECT commit -m "Update cleanup job to $CLEANUP_VERSION"
+      git -C $PROJECT push --set-upstream origin update-cleanup-to-$CLEANUP_VERSION
+
+      cd $PROJECT && \
+        gh pr create \
+        --title "Update cleanup version to $CLEANUP_VERSION" \
+        --body "This PR is created automatically by a script" \
+        --base $DEFAULT_BRANCH \
+        --assignee $USER || \
+        echo "[WARN] Pull request can't be created, please create it manually" && true \
+        && \
+      cd ../
+    fi
+  fi
+done
+
