@@ -53,8 +53,7 @@ jobs:
           make docker-test-ci
 
     - codecov/upload:
-        cli_args: -v
-          # file: .coverage/coverage.xml
+        verbose: true
 
   publish-github-release:
     docker:
