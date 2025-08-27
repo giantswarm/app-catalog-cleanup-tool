@@ -5,7 +5,7 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 ## [Unreleased]
 
 - Update
-  - Update python to 3.12
+  - Update python to 3.13
   - Update python dependencies
 - Fixed
   - Incorrect invocation of `pytest` in CI container image

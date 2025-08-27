@@ -1,4 +1,4 @@
-FROM python:3.12.6-slim AS base
+FROM gsoci.azurecr.io/giantswarm/python:3.13.5-slim AS base
 
 ENV LANG=C.UTF-8 \
   LC_ALL=C.UTF-8 \
@@ -11,7 +11,7 @@ RUN pip install --no-cache-dir -U pipenv
 WORKDIR $ACCT_DIR
 
 
-FROM base as builder
+FROM base AS builder
 
 # pip prerequesties
 RUN apt-get update && \
