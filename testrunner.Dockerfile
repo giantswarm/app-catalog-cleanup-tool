@@ -3,7 +3,7 @@ FROM gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:latest
 ARG ACCT_DIR="/acct"
 
 RUN pip install --no-cache-dir -U pipenv
-RUN apt-get update && apt-get install -y wget git xz-utils && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y wget git xz-utils libatomic1 && rm -rf /var/lib/apt/lists/*
 RUN wget -qO- "https://github.com/koalaman/shellcheck/releases/download/latest/shellcheck-latest.linux.x86_64.tar.xz" | tar -xJv && cp "shellcheck-latest/shellcheck" /usr/bin/
 WORKDIR $ACCT_DIR
 COPY .bandit .
