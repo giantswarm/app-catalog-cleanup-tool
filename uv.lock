@@ -24,14 +24,6 @@ dependencies = [
     { name = "tempora" },
 ]
 
-[package.optional-dependencies]
-dev = [
-    { name = "pre-commit" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-mock" },
-]
-
 [package.dev-dependencies]
 dev = [
     { name = "pre-commit" },
@@ -44,16 +36,11 @@ dev = [
 requires-dist = [
     { name = "aiofiles", specifier = ">=23" },
     { name = "configargparse", specifier = ">=1.5" },
-    { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=2.13" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=6.2.4" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=2.12" },
-    { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.6" },
     { name = "python-dateutil", specifier = ">=2.8" },
     { name = "pytz", specifier = ">=2021.1" },
     { name = "pyyaml", specifier = ">=5.1" },
     { name = "tempora", specifier = ">=5.5" },
 ]
-provides-extras = ["dev"]
 
 [package.metadata.requires-dev]
 dev = [

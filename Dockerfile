@@ -6,8 +6,8 @@ ENV LANG=C.UTF-8 \
   PYTHONFAULTHANDLER=1 \
   ACCT_DIR="/acct"
 
-# Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+# Install uv - pinned to specific version for security
+COPY --from=ghcr.io/astral-sh/uv:0.5.18 /uv /uvx /bin/
 
 WORKDIR $ACCT_DIR
 

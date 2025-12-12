@@ -10,6 +10,7 @@ authors = [
 ]
 keywords = ["helm registry", "helm"]
 classifiers = [
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
@@ -26,14 +27,6 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/giantswarm/app-catalog-cleanup-tool"
-
-[project.optional-dependencies]
-dev = [
-    "pre-commit>=2.13",
-    "pytest>=6.2.4",
-    "pytest-mock>=3.6",
-    "pytest-cov>=2.12",
-]
 
 [build-system]
 requires = ["hatchling"]
