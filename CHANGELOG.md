@@ -4,6 +4,12 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+### Changed
+
+- Update Python to v3.14
+
+## [0.3.0] - 2025-12-12
+
 - Update
   - Update python to 3.12
   - Update python dependencies
@@ -53,7 +59,8 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 - Added
   - Initial commit
 
-[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.5...HEAD
+[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.5...v0.3.0
 [0.2.5]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.2...v0.2.3
