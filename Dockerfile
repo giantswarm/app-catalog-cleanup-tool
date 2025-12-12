@@ -1,4 +1,4 @@
-FROM python:3.12.6-slim AS base
+FROM python:3.14.2-slim AS base
 
 ENV LANG=C.UTF-8 \
   LC_ALL=C.UTF-8 \
@@ -6,7 +6,8 @@ ENV LANG=C.UTF-8 \
   PYTHONFAULTHANDLER=1 \
   ACCT_DIR="/acct"
 
-RUN pip install --no-cache-dir -U pipenv
+# Install uv - pinned to specific version for security
+COPY --from=ghcr.io/astral-sh/uv:0.9.17 /uv /uvx /bin/
 
 WORKDIR $ACCT_DIR
 
@@ -18,9 +19,10 @@ RUN apt-get update && \
   apt-get install --no-install-recommends -y gcc && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY Pipfile Pipfile.lock ./
+COPY pyproject.toml uv.lock ./
 
-RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy --clear
+# Install dependencies using uv
+RUN uv sync --frozen --no-install-project
 
 
 FROM base
