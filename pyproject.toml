@@ -3,7 +3,7 @@ name = "app-catalog-cleanup-tool"
 version = "0.0.1"
 description = "Application that removes old charts from chart repos."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.12,<3.13"
 license = { text = "Apache-2.0" }
 authors = [
     { name = "Łukasz Piątkowski", email = "lukasz@giantswarm.io" }
