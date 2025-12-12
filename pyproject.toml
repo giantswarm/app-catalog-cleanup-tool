@@ -1,3 +1,52 @@
+[project]
+name = "app-catalog-cleanup-tool"
+version = "0.0.1"
+description = "Application that removes old charts from chart repos."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Łukasz Piątkowski", email = "lukasz@giantswarm.io" }
+]
+keywords = ["helm registry", "helm"]
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+]
+dependencies = [
+    "aiofiles>=23",
+    "configargparse>=1.5",
+    "tempora>=5.5",
+    "python-dateutil>=2.8",
+    "pyyaml>=5.1",
+    "pytz>=2021.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/giantswarm/app-catalog-cleanup-tool"
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit>=2.13",
+    "pytest>=6.2.4",
+    "pytest-mock>=3.6",
+    "pytest-cov>=2.12",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=2.13",
+    "pytest>=6.2.4",
+    "pytest-mock>=3.6",
+    "pytest-cov>=2.12",
+]
+
 [tool.black]
 line-length = 120
 target-version = ['py312']
