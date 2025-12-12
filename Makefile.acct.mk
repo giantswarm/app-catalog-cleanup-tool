@@ -59,7 +59,7 @@ test-docker-args = run -it --rm -v ${PWD}/.coverage/:/acct/.coverage/
 test-docker-run = $(CONTAINER_TOOL) $(test-docker-args) ${IMG}-test:latest
 
 test:
-	pipenv run python -m pytest $(test-command)
+	uv run pytest $(test-command)
 
 docker-test: docker-build-test
 	$(test-docker-run) $(test-command)

@@ -24,8 +24,8 @@ There are currently 2 options:
 1. Using your native python 3 installation.
 
    - Checkout the source code from repository
-   - Run `pipenv install`
-   - Start the tool using `pipenv run python -m app_catalog_cleanup_tool ...`
+   - Run `uv sync`
+   - Start the tool using `uv run python -m app_catalog_cleanup_tool ...`
 
 2. Using the dockerized version
 
@@ -63,12 +63,12 @@ There are currently 2 options:
 
 ## Development
 
-Use `pipenv` to manage dependencies and `pre-commit` to check for code quality. To get started, check out the repo
+Use `uv` to manage dependencies and `pre-commit` to check for code quality. To get started, check out the repo
 and run:
 
 ```bash
-pipenv install -d
-pipenv run pre-commit install --install-hooks
+uv sync
+uv run pre-commit install --install-hooks
 ```
 
 ## Update catalog repos

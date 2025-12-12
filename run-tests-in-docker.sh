@@ -1,3 +1,3 @@
 #!/bin/bash -e
 
-pipenv run python -m pytest "$@"
+uv run pytest "$@"
