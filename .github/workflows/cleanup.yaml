@@ -79,14 +79,14 @@ jobs:
           fi
 
       - name: Execute ACC tool
-        uses: docker://gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:0.2.7
+        uses: docker://gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:0.3.0
         with:
           args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
 
       - name: Setup Helm
         uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4.3.1
         with:
-          version: v3.14.0
+          version: v3.19.3
 
       - name: Recreate the repository index.yaml
         run: |
