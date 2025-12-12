@@ -3,7 +3,7 @@ FROM gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:latest
 ARG ACCT_DIR="/acct"
 
 # Install uv - pinned to specific version for security (already in base image but ensure it's available)
-COPY --from=ghcr.io/astral-sh/uv:0.5.18 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.9.17 /uv /uvx /bin/
 
 RUN apt-get update && apt-get install -y wget git xz-utils libatomic1 && rm -rf /var/lib/apt/lists/*
 # Pin shellcheck to specific version for security and reproducibility
