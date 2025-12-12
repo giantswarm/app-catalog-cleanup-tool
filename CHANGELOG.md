@@ -4,6 +4,10 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+### Changed
+
+- Update Python to v3.14
+
 ## [0.3.0] - 2025-12-12
 
 - Update
