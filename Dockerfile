@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8 \
   ACCT_DIR="/acct"
 
 # Install uv - pinned to specific version for security
-COPY --from=ghcr.io/astral-sh/uv:0.9.22 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.9.24 /uv /uvx /bin/
 
 WORKDIR $ACCT_DIR
 
