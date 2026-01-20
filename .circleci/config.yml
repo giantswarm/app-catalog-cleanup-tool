@@ -19,6 +19,8 @@ workflows:
         name: push-to-registries
         requires:
         - run-tests
+        registries-data: |-
+          public gsoci.azurecr.io ACR_GSOCI_USERNAME ACR_GSOCI_PASSWORD false
         filters:
             # Needed to trigger job also on git tag.
           tags:
