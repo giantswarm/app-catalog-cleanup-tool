@@ -30,15 +30,6 @@ workflows:
             ignore:
             - main
             - master
-    - publish-github-release:
-        name: publish-github-release
-        requires:
-        - push-to-registries
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
 
 jobs:
   run-tests:
@@ -56,13 +47,3 @@ jobs:
 
     - codecov/upload:
         verbose: true
-
-  publish-github-release:
-    docker:
-    - image: cibuilds/github:0.13
-    steps:
-    - checkout
-    - run:
-        name: Publish Release on GitHub
-        command: |
-          ghr -t ${ARCHITECT_GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG} ./dacct.sh
