@@ -4,6 +4,14 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+### Added
+
+- Add the `--pre-release` (`-p`) removal condition: a regexp the pre-release part of a semver version must fully
+  match (`rc[.][0-9]+` for `1.0.0-rc.1`); only matching versions are removed, every other version is kept. Alone it
+  removes every matching version; combined with `--keep-since`, `--delete-before` or `--limit-number` that condition
+  applies to the matching versions only. The reusable cleanup workflow takes it as the `pre-release` input.
+- Log every entry the cleanup removes, so `--dry-run` lists them.
+
 ### Changed
 
 - Update Python to v3.14

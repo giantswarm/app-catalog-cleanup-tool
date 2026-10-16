@@ -10,7 +10,7 @@ import pytz
 from dateutil import parser
 from tempora import parse_timedelta
 
-from app_catalog_cleanup_tool.splitters import BaseSplitter, DateSplitter, LimitSplitter
+from app_catalog_cleanup_tool.splitters import BaseSplitter, DateSplitter, LimitSplitter, PreReleaseSplitter
 
 VER = "v0.0.0-dev"
 APP_NAME = "app_catalog_cleanup_tool"
@@ -71,7 +71,17 @@ def configure() -> configargparse.Namespace:
         default=".*",
         help="Regexp of app names the cleanup will apply to.",
     )
-    exc_group = config_parser.add_mutually_exclusive_group(required=True)
+    config_parser.add_argument(
+        "-p",
+        "--pre-release",
+        required=False,
+        help="Regexp the pre-release part of a semver version must fully match, like 'rc[.][0-9]+' for "
+        "'1.0.0-rc.1' ('.*' matches every pre-release, versions like '1.0.0-gs1' included). Only matching "
+        "pre-release entries are removed; every other version is kept. Alone, it removes every matching entry of "
+        "the apps matching '--app-regexp'; combined with '--keep-since', '--delete-before' or '--limit-number', "
+        "that condition applies to the matching entries only.",
+    )
+    exc_group = config_parser.add_mutually_exclusive_group(required=False)
     exc_group.add_argument(
         "-s",
         "--keep-since",
@@ -81,7 +91,7 @@ def configure() -> configargparse.Namespace:
         "-b",
         "--delete-before",
         help="A time delta (like '3 days' or '4 weeks') to keep catalog entries. Older entries also matching "
-        "'--arg-regexp' will be removed.",
+        "'--app-regexp' will be removed.",
     )
     exc_group.add_argument(
         "-l",
@@ -132,7 +142,22 @@ def validate(config: configargparse.Namespace) -> Optional[ValidatedConfig]:
 
 
 def get_splitter(config: configargparse.Namespace) -> BaseSplitter:
-    splitter: BaseSplitter
+    splitter = get_condition_splitter(config)
+    if config.pre_release:
+        try:
+            pre_release_regexp = re.compile(config.pre_release)
+        except re.error:
+            raise ValueError(f"pre-release regexp '{config.pre_release}' is not a valid regexp")
+        return PreReleaseSplitter(pre_release_regexp, splitter)
+    if splitter is None:
+        raise ValueError(
+            "one of the conditions '--pre-release', '--keep-since', '--delete-before' or '--limit-number' is required"
+        )
+    return splitter
+
+
+def get_condition_splitter(config: configargparse.Namespace) -> Optional[BaseSplitter]:
+    splitter: Optional[BaseSplitter]
     # parse since
     keep_from = datetime.now(timezone.utc)
     if config.keep_since:
@@ -156,5 +181,5 @@ def get_splitter(config: configargparse.Namespace) -> BaseSplitter:
             raise ValueError(f"can't parse limit count '{config.limit_number}'")
         splitter = LimitSplitter(count)
     else:
-        raise ValueError("Couldn't configure a valid splitter. This is highly unexpected. Please report a bug.")
+        splitter = None
     return splitter

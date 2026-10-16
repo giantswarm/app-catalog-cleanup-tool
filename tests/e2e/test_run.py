@@ -1,8 +1,10 @@
 import asyncio
+import logging
 import sys
 from typing import cast
 from unittest.mock import call, Mock, AsyncMock, MagicMock
 
+import pytest
 from pytest_mock import MockerFixture
 
 import app_catalog_cleanup_tool
@@ -55,3 +57,60 @@ def test_run_catalog_cleanup(mocker: MockerFixture, test_index_yaml: str) -> Non
         ],
         any_order=True,
     )
+
+
+def test_run_pre_release_dry_run(
+    mocker: MockerFixture, caplog: pytest.LogCaptureFixture, test_index_yaml: str  # noqa: F811
+) -> None:
+    mocker.patch.object(sys, "argv", ["bogus", "--pre-release", ".*", "--dry-run", "-a", ".*", "tests/assets"])
+    move_mock = mocker.patch("app_catalog_cleanup_tool.__main__.shutil.move")
+    rmtree_mock = mocker.patch("app_catalog_cleanup_tool.__main__.shutil.rmtree")
+    remove_mock = mocker.patch("app_catalog_cleanup_tool.__main__.aiofiles.os.remove")
+    async_open_mock = mocker.patch("app_catalog_cleanup_tool.__main__.aiofiles.open")
+    index_file_mock = mocker.AsyncMock(name="index file")
+    index_file_mock.read.return_value = test_index_yaml
+    async_open_mock.return_value.__aenter__.return_value = index_file_mock
+
+    with caplog.at_level(logging.INFO):
+        asyncio.run(main())
+
+    # only the pre-release entry is listed; the stable versions stay
+    removed = [r.getMessage() for r in caplog.records if "entry will be removed" in r.getMessage()]
+    assert removed == [
+        "App 'linkerd2-app' entry will be removed: 'linkerd2-app-0.0.0-25ecb7f4e6c03e719599e78c750047c931cafe1a.tgz'."
+    ]
+    # dry run: the index is only read, nothing is moved or removed
+    async_open_mock.assert_called_once_with(TEST_INDEX_YAML_PATH, mode="r")
+    move_mock.assert_not_called()
+    remove_mock.assert_not_called()
+    rmtree_mock.assert_not_called()
+
+
+def test_run_pre_release_rc_dry_run(
+    mocker: MockerFixture, caplog: pytest.LogCaptureFixture, test_index_yaml: str  # noqa: F811
+) -> None:
+    mocker.patch.object(sys, "argv", ["bogus", "-p", r"rc[.][0-9]+", "-n", "tests/assets"])
+    async_open_mock = mocker.patch("app_catalog_cleanup_tool.__main__.aiofiles.open")
+    index_file_mock = mocker.AsyncMock(name="index file")
+    index_file_mock.read.return_value = test_index_yaml
+    async_open_mock.return_value.__aenter__.return_value = index_file_mock
+
+    with caplog.at_level(logging.INFO):
+        asyncio.run(main())
+
+    # the commit-hash pre-release doesn't match 'rc.N' and stays
+    assert not [r for r in caplog.records if "entry will be removed" in r.getMessage()]
+
+
+def test_run_without_condition_fails(mocker: MockerFixture) -> None:
+    mocker.patch.object(sys, "argv", ["bogus", "-a", ".*", "tests/assets"])
+    with pytest.raises(SystemExit) as exc:
+        asyncio.run(main())
+    assert exc.value.code == 1
+
+
+def test_run_invalid_pre_release_regexp_fails(mocker: MockerFixture) -> None:
+    mocker.patch.object(sys, "argv", ["bogus", "-p", "rc(", "tests/assets"])
+    with pytest.raises(SystemExit) as exc:
+        asyncio.run(main())
+    assert exc.value.code == 1

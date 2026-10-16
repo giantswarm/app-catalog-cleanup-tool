@@ -20,6 +20,10 @@ on:
         description: "Most recent versions to keep in the catalog"
         required: false
         type: string
+      pre-release:
+        description: "Regexp the pre-release part of a version must fully match, like 'rc[.][0-9]+'; only these are removed"
+        required: false
+        type: string
       debug:
         description: "Enable debug mode"
         default: true
@@ -78,10 +82,20 @@ jobs:
             echo "condition=" >> $GITHUB_OUTPUT
           fi
 
+      - name: Check for pre-release
+        id: pre-release
+        run: |
+          if [[ ! -z "${{ inputs.pre-release }}" ]]
+          then
+            echo "pre-release=--pre-release \"${{ inputs.pre-release }}\"" >> $GITHUB_OUTPUT
+          else
+            echo "pre-release=" >> $GITHUB_OUTPUT
+          fi
+
       - name: Execute ACC tool
         uses: docker://gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:0.3.0
         with:
-          args: -a "${{ inputs.app-regexp }}" ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
+          args: -a "${{ inputs.app-regexp }}" ${{ steps.pre-release.outputs.pre-release }} ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
 
       - name: Setup Helm
         uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
@@ -109,7 +123,7 @@ jobs:
             Periodic cleanup.
 
             - Application Regexp: `${{ inputs.app-regexp }}`
-            - Cleanup Condition: `${{ steps.condition.outputs.condition }}`
+            - Cleanup Condition: `${{ steps.pre-release.outputs.pre-release }} ${{ steps.condition.outputs.condition }}`
             - Created By: [ACCT Github Workflow][1]
 
             [1]: https://raw.githubusercontent.com/giantswarm/app-catalog-cleanup-tool/feature/cleanup-workflow/.github/workflows/cleanup.yaml
