@@ -55,8 +55,9 @@ async def clean_index(cfg: ValidatedConfig) -> List[str]:
         new_app_entries, entries_to_remove = cfg.splitter.split(entries[app_name])
         if len(new_app_entries) > 0:
             new_entries[app_name] = new_app_entries
-        if len(entries_to_remove) > 0:
-            to_remove.extend(entries_to_remove)
+        for name in entries_to_remove:
+            logger.info(f"App '{app_name}' entry will be removed: '{name}'.")
+        to_remove.extend(entries_to_remove)
         after = len(new_app_entries)
         logger.info(f"App '{app_name}' number of versions will be trimmed to {after} from {before}.")
 

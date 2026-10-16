@@ -61,6 +61,17 @@ There are currently 2 options:
    python -m app_catalog_cleanup_tool -a "loki.*" -l 3 /tmp/giantswarm-playground-catalog
    ```
 
+4. Remove every release candidate (like `1.0.0-rc.1`) of all apps, keeping every other version
+
+   ```bash
+   python -m app_catalog_cleanup_tool -a ".*" --pre-release 'rc[.][0-9]+' /tmp/giantswarm-playground-catalog
+   ```
+
+   `--pre-release` takes a regexp the pre-release part of a semver version must fully match; `.*` matches every
+   pre-release, versions like `1.0.0-gs1` included. It combines with the other conditions, which then apply to the
+   matching versions only: with `-b "2 weeks"` it removes matching versions older than two weeks, with `-l 1` it
+   keeps the most recent matching version of each app.
+
 ## Development
 
 Use `uv` to manage dependencies and `pre-commit` to check for code quality. To get started, check out the repo
