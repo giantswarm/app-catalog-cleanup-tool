@@ -93,7 +93,7 @@ jobs:
           fi
 
       - name: Execute ACC tool
-        uses: docker://gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:0.3.0
+        uses: docker://gsoci.azurecr.io/giantswarm/app-catalog-cleanup-tool:0.4.1
         with:
           args: -a "${{ inputs.app-regexp }}" ${{ steps.pre-release.outputs.pre-release }} ${{ steps.condition.outputs.condition }} ${{ steps.dry-run.outputs.dry-run }} .
 
