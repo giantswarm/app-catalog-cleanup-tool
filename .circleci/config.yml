@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@6.15.0
+  architect: giantswarm/architect@10.13.9
   codecov: codecov/codecov@6.1.0
 
 workflows:
@@ -22,14 +22,12 @@ workflows:
         registries-data: |-
           public gsoci.azurecr.io ACR_GSOCI_USERNAME ACR_GSOCI_PASSWORD false
         filters:
-            # Needed to trigger job also on git tag.
+          # Release tags only: run-tests builds the image on branches, and the dev
+          # images this job would build there are not pushed.
           tags:
             only: /^v.*/
-
           branches:
-            ignore:
-            - main
-            - master
+            ignore: /.*/
 
 jobs:
   run-tests:
