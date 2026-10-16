@@ -4,6 +4,8 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-16
+
 ### Added
 
 - Add the `--pre-release` (`-p`) removal condition: a regexp the pre-release part of a semver version must fully
@@ -67,7 +69,8 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 - Added
   - Initial commit
 
-[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.5...v0.3.0
 [0.2.5]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.3...v0.2.4
