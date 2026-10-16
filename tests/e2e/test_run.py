@@ -107,3 +107,10 @@ def test_run_without_condition_fails(mocker: MockerFixture) -> None:
     with pytest.raises(SystemExit) as exc:
         asyncio.run(main())
     assert exc.value.code == 1
+
+
+def test_run_invalid_pre_release_regexp_fails(mocker: MockerFixture) -> None:
+    mocker.patch.object(sys, "argv", ["bogus", "-p", "rc(", "tests/assets"])
+    with pytest.raises(SystemExit) as exc:
+        asyncio.run(main())
+    assert exc.value.code == 1
