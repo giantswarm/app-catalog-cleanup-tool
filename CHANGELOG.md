@@ -4,6 +4,8 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 
 ## [Unreleased]
 
+## [0.4.0-rc.1] - 2026-10-16
+
 ### Added
 
 - Add the `--pre-release` (`-p`) removal condition: a regexp the pre-release part of a semver version must fully
@@ -12,10 +14,6 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
   applies to the matching versions only. The reusable cleanup workflow takes it as the `pre-release` input.
 - Log every entry the cleanup removes, so `--dry-run` lists them.
 
-### Changed
-
-- Update Python to v3.14
-
 ## [0.3.0] - 2025-12-12
 
 - Update
@@ -23,6 +21,10 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
   - Update python dependencies
 - Fixed
   - Incorrect invocation of `pytest` in CI container image
+
+### Changed
+
+- Update Python to v3.14
 
 ## [0.2.7] - 2024-02-20
 
@@ -67,7 +69,8 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), following [Se
 - Added
   - Initial commit
 
-[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.4.0-rc.1...HEAD
+[0.4.0-rc.1]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.3.0...v0.4.0-rc.1
 [0.3.0]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.5...v0.3.0
 [0.2.5]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/giantswarm/app-catalog-cleanup-tool/compare/v0.2.3...v0.2.4
