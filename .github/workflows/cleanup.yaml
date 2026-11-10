@@ -108,6 +108,18 @@ jobs:
           helm repo index --url "https://giantswarm.github.io/$(echo -n ${{ env.GITHUB_REPOSITORY }} | cut -d '/' -f2)" --merge index.yaml /tmp/build.tmp
           sudo cp /tmp/build.tmp/index.yaml .
 
+      # Pushing a new branch, git sends only the objects missing from the refs the
+      # remote advertises and the runner has. Catalogs get new charts every few
+      # minutes, so the base branch usually moves after the shallow checkout. Then
+      # git finds no common object and uploads the whole tree (GiBs), which GitHub
+      # cuts off with HTTP 500 after about a minute. Fetching the current tip of the
+      # base branch right before the push keeps the push down to the changed files.
+      - name: Fetch the current tip of the base branch
+        if: ${{ ! inputs.dry-run }}
+        run: |
+          base="$(git branch --show-current)"
+          git fetch --depth=1 origin "+refs/heads/${base}:refs/remotes/origin/${base}"
+
       - name: Create Pull Request
         id: pull-request
         if: ${{ ! inputs.dry-run }}
@@ -128,8 +140,12 @@ jobs:
 
             [1]: https://raw.githubusercontent.com/giantswarm/app-catalog-cleanup-tool/feature/cleanup-workflow/.github/workflows/cleanup.yaml
 
+      # The branch is unique to this run, so any pull request on it is this run's.
+      # Do not require operation 'created': when the create call times out after
+      # GitHub has already opened the pull request, the action retries, finds it
+      # and reports 'none', and the cleanup would be left unmerged.
       - name: Merge Pull Request
-        if: steps.pull-request.outputs.pull-request-operation == 'created'
+        if: steps.pull-request.outputs.pull-request-number != '' && steps.pull-request.outputs.pull-request-operation != 'closed'
         uses: juliangruber/merge-pull-request-action@8325c6102b479a25200b2ecbede066b1ac3e2feb # v1.4.0
         with:
           github-token: ${{ github.token }}
